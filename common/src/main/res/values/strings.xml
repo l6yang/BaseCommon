@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">common</string>
+    <string name="refuse">拒绝</string>
+    <string name="agree">同意</string>
+</resources>

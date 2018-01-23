@@ -1,0 +1,145 @@
+package com.loyal.base.ui;
+
+import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.widget.Spinner;
+
+import com.loyal.base.impl.IntentFrame;
+import com.loyal.base.impl.UIInterface;
+import com.loyal.base.util.ConnectUtil;
+import com.loyal.base.util.IntentUtil;
+import com.loyal.base.util.ObjectUtil;
+import com.loyal.base.util.StateBarUtil;
+import com.loyal.base.util.TimeUtil;
+import com.loyal.base.util.ToastUtil;
+
+public abstract class BasicActivity extends AppCompatActivity implements IntentFrame, UIInterface {
+
+    protected abstract
+    @LayoutRes
+    int actLayoutRes();
+
+    public abstract void afterOnCreate();
+
+    public abstract boolean isTransStatus();
+
+    public abstract void bindViews();
+
+    protected IntentUtil builder;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(actLayoutRes());
+        bindViews();
+        StateBarUtil.setTranslucentStatus(this, isTransStatus());//沉浸式状态栏
+        afterOnCreate();
+        hasIntentParams(false);
+    }
+
+    /***/
+    public void hasIntentParams(boolean hasParam) {
+        builder = null;
+        if (hasParam)
+            builder = new IntentUtil(this, getIntent());
+        else builder = new IntentUtil(this);
+    }
+
+    @Override
+    public void startActivity(@Nullable Class<?> tClass) {
+        builder.startActivity(tClass);
+    }
+
+    @Override
+    public void startActivityForResult(@Nullable Class<?> tClass, @IntRange(from = 2) int reqCode) {
+        builder.startActivityForResult(tClass, reqCode);
+    }
+
+    @Override
+    public void startService(@Nullable Class<?> tClass) {
+        builder.startService(tClass);
+    }
+
+    @Override
+    public void showToast(@NonNull String text) {
+        ToastUtil.showToast(this, text);
+    }
+
+    @Override
+    public void showToast(@StringRes int resId) {
+        showToast(getString(resId));
+    }
+
+    @Override
+    public void showErrorToast(int resId, Throwable e) {
+        showErrorToast(getString(resId), e);
+    }
+
+    @Override
+    public void showErrorToast(@NonNull String text, Throwable e) {
+        String error = null == e ? "" : ConnectUtil.getError(e);
+        showToast(replaceNull(text) + (TextUtils.isEmpty(error) ? "" : "\n" + error));
+    }
+
+    @Override
+    public void showDialog(@NonNull String text) {
+        showDialog(text, false);
+    }
+
+    @Override
+    public void showDialog(@NonNull String text, boolean finish) {
+        ToastUtil.showDialog(this, replaceNull(text), finish);
+    }
+
+    @Override
+    public String replaceNull(CharSequence sequence) {
+        return Str.replaceNull(sequence);
+    }
+
+    @Override
+    public String subEndTime(@NonNull String t) {
+        return TimeUtil.subEndTime(t);
+    }
+
+    @Override
+    public String encodeStr2Utf(@NonNull String string) {
+        return Str.encodeStr2Utf(string);
+    }
+
+    @Override
+    public String decodeStr2Utf(@NonNull String string) {
+        return Str.decodeStr2Utf(string);
+    }
+
+    @Override
+    public String getSpinSelectStr(Spinner spinner, @NonNull String methodName) {
+        return (String) ObjectUtil.getMethodValue(spinner.getSelectedItem(), "getDm");
+    }
+
+    @Override
+    public void showErrorDialog(@NonNull String text) {
+        showErrorDialog(text, false);
+    }
+
+    @Override
+    public void showErrorDialog(@NonNull String text, boolean finish) {
+        showErrorDialog(text, null, finish);
+    }
+
+    @Override
+    public void showErrorDialog(@NonNull String text, Throwable e) {
+        showErrorDialog(text, e, false);
+    }
+
+    @Override
+    public void showErrorDialog(@NonNull String text, Throwable e, boolean finish) {
+        String error = null == e ? "" : ConnectUtil.getError(e);
+        showDialog(replaceNull(text) + (TextUtils.isEmpty(error) ? "" : "\n" + error), finish);
+    }
+}
