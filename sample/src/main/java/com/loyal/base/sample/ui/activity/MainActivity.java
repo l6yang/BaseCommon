@@ -1,6 +1,8 @@
-package com.loyal.base.sample;
+package com.loyal.base.sample.ui.activity;
 
 import android.widget.TextView;
+
+import com.loyal.base.sample.R;
 
 import butterknife.BindView;
 

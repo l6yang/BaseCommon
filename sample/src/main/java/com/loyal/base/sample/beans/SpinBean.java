@@ -1,4 +1,4 @@
-package com.loyal.base.sample;
+package com.loyal.base.sample.beans;
 
 import com.loyal.base.beans.BaseSpinBean;
 

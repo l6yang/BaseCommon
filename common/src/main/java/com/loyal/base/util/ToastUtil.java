@@ -39,7 +39,7 @@ public class ToastUtil implements Contacts {
         toast.show();
     }
 
-    public static void showDialog(final Activity context, String content, final boolean isFinish) {
+    public static void showDialog(final Context context, final String content, final boolean isFinish) {
         BaseDialog.Builder builder = new BaseDialog.Builder(context);
         builder.setContent(content).setOutsideCancel(false).setOutsideCancel(false);
         builder.setBottomBtnType(isFinish ? TYPE.RIGHT : TYPE.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new BaseDialog.DialogClickListener() {
@@ -47,7 +47,10 @@ public class ToastUtil implements Contacts {
             public void onClick(BaseDialog dialog, View view, Object tag) {
                 if (dialog != null && dialog.isShowing())
                     dialog.dismiss();
-                if (isFinish) context.finish();
+                if (isFinish) {
+                    if (context instanceof Activity)
+                        ((Activity) context).finish();
+                }
             }
         });
         builder.create().show();

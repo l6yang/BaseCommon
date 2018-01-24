@@ -1,12 +1,13 @@
-package com.loyal.base.sample;
+package com.loyal.base.sample.ui.activity;
 
 import android.Manifest;
 
-import com.loyal.base.ui.BasePerMissionActivity;
+import com.loyal.base.sample.R;
+import com.loyal.base.ui.activity.BasicPerMissionActivity;
 
 import butterknife.ButterKnife;
 
-public class PermissionActivity extends BasePerMissionActivity implements BasePerMissionActivity.onAllPermissionsListener {
+public class PermissionActivity extends BasicPerMissionActivity implements BasicPerMissionActivity.onAllPermissionsListener {
 
     @Override
     protected int actLayoutRes() {
@@ -30,7 +31,7 @@ public class PermissionActivity extends BasePerMissionActivity implements BasePe
 
     @Override
     public void onAllPermissionResult(String permission, boolean successful, boolean shouldShow) {
-        System.out.println("onAllPermissionResult#" + permission + "   " + successful + "  " + shouldShow);
+        System.out.println("onAllPermissionsResult#" + permission + "   " + successful + "  " + shouldShow);
         switch (permission) {
             case Manifest.permission.CAMERA:
                 if (successful) {

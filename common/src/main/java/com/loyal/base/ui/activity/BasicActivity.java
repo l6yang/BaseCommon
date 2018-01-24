@@ -1,4 +1,4 @@
-package com.loyal.base.ui;
+package com.loyal.base.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.IntRange;
@@ -19,7 +19,7 @@ import com.loyal.base.util.StateBarUtil;
 import com.loyal.base.util.TimeUtil;
 import com.loyal.base.util.ToastUtil;
 
-public abstract class BasicActivity extends AppCompatActivity implements IntentFrame, UIInterface {
+public abstract class BasicActivity extends AppCompatActivity implements IntentFrame.ActivityFrame, UIInterface {
 
     protected abstract
     @LayoutRes
@@ -52,18 +52,18 @@ public abstract class BasicActivity extends AppCompatActivity implements IntentF
     }
 
     @Override
-    public void startActivity(@Nullable Class<?> tClass) {
-        builder.startActivity(tClass);
+    public void startActivityByAct(@Nullable Class<?> tClass) {
+        builder.startActivityByAct(tClass);
     }
 
     @Override
-    public void startActivityForResult(@Nullable Class<?> tClass, @IntRange(from = 2) int reqCode) {
-        builder.startActivityForResult(tClass, reqCode);
+    public void startActivityForResultByAct(@Nullable Class<?> tClass, @IntRange(from = 2) int reqCode) {
+        builder.startActivityForResultByAct(tClass, reqCode);
     }
 
     @Override
-    public void startService(@Nullable Class<?> tClass) {
-        builder.startService(tClass);
+    public void startServiceByAct(@Nullable Class<?> tClass) {
+        builder.startServiceByAct(tClass);
     }
 
     @Override
@@ -119,7 +119,7 @@ public abstract class BasicActivity extends AppCompatActivity implements IntentF
 
     @Override
     public String getSpinSelectStr(Spinner spinner, @NonNull String methodName) {
-        return (String) ObjectUtil.getMethodValue(spinner.getSelectedItem(), "getDm");
+        return (String) ObjectUtil.getMethodValue(spinner.getSelectedItem(), methodName);
     }
 
     @Override

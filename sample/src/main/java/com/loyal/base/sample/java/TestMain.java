@@ -1,5 +1,6 @@
-package com.loyal.base.sample;
+package com.loyal.base.sample.java;
 
+import com.loyal.base.sample.beans.SpinBean;
 import com.loyal.base.util.ObjectUtil;
 
 public class TestMain {
