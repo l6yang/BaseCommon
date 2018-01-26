@@ -11,11 +11,21 @@ BaseLib
 <br>`个人类型注册地址：`https://bintray.com/signup/oss
 ![personal](https://github.com/l6yang/BaseCommon/blob/master/images/personal.png?raw=true)
 <br>这里是没有填写组织名称的。可以使用第三方注册，常用的就是 github账号，需要注意：如果github账号绑定的邮箱不是gmail邮箱，Bintray无法注册成功。所以这个时候你需要完成第一步然后通过gmail邮箱完成注册。
-<br>`Gmail邮箱注册和登陆可参考此链接（亲测可用）` https://jingyan.baidu.com/article/36d6ed1f63b9831bce48837f.html
+<br>[`Gmail邮箱注册和登陆参考链接（亲测可用）`](https://jingyan.baidu.com/article/36d6ed1f63b9831bce48837f.html)
 ### 2、GitHub官网：（此步可忽略，不推荐忽略）https://github.com/
-<br>`可参考此篇文章`http://blog.csdn.net/p10010/article/details/51336332
+<br>[`可参考此篇文章`](http://blog.csdn.net/p10010/article/details/51336332)
 ### 3、项目配置
 在你的build.gradle（注意是`Project中的build.gradle`）加入下面一行代码
-<br>`   classpath 'com.novoda:bintray-release:0.5.0'`,如图
-<br>此外若项目中有中文（注释及说明）
+<br>`classpath 'com.novoda:bintray-release:0.5.0'`,如图
+![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)
+<br>此外若项目中有中文（注释及说明）,需加以下代码
+<br>`tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }`,如图
+    <br>
+    ![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf-8.png?raw=true)
 
