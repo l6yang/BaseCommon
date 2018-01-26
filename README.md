@@ -14,6 +14,7 @@ BaseLib
 <br>[`Gmail邮箱注册和登陆参考链接（亲测可用）`](https://jingyan.baidu.com/article/36d6ed1f63b9831bce48837f.html)
 * 1.2、注册成功后进入主页面，鼠标移至右上角用户名处，在弹出的对话框中点击**Edit Profile**，然后在左边的菜单栏点击**API Key**，再次输入密码即可看到你的API Key，点击show旁边的copy图标，即可将API Key复制到粘贴板。流程如下图：<br>
 ![api_key](https://github.com/l6yang/BaseCommon/blob/master/images/api_key.png?raw=true) 
+<br>**先将copy的API Key粘贴在文本文档中（项目中的local.properties也可，可参考APK签名配置），稍后要用到**
 ### 2、GitHub官网：（此步可忽略，不推荐）https://github.com/
 [`可参考此篇文章`](http://blog.csdn.net/p10010/article/details/51336332)
 ### 3、项目配置
