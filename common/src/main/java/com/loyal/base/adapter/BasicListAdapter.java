@@ -34,8 +34,8 @@ public abstract class BasicListAdapter<T, V extends BasicListAdapter.ViewHolder>
 
     /**
      * @param fromRes 是否Assets目录下的json文件
-     *                true-->表示param json是Assets目录下的json文件名 ex："test.json"
-     *                false->表示param json是json字符串 ex：{"name":"张三"}
+     *                true：表示param json是Assets目录下的json文件名 ex："test.json"
+     *                false：表示param json是json字符串 ex：{"name":"张三"}
      * @param json    json文件或者Assets下的文件名
      */
     public BasicListAdapter(Context context, String json, Class<T> t, boolean fromRes) {
