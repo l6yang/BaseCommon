@@ -20,12 +20,12 @@ BaseLib
 ![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)
 <br>此外若项目中有中文（注释及说明）,需加以下代码
 <br>`tasks.withType(Javadoc) {
-        options {
-            encoding "UTF-8"
-            charSet 'UTF-8'
-            links "http://docs.oracle.com/javase/7/docs/api"
-        }
-    }`,如图
+<br>        options {
+<br>            encoding "UTF-8"
+<br>            charSet 'UTF-8'
+<br>            links "http://docs.oracle.com/javase/7/docs/api"
+<br>        }
+<br>    }`,如图
     <br>
-    ![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf-8.png?raw=true)
+    ![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
 
