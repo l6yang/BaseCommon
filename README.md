@@ -16,10 +16,10 @@ BaseLib
 [`可参考此篇文章`](http://blog.csdn.net/p10010/article/details/51336332)
 ### 3、项目配置
 * 3.1、在你的build.gradle（注意是`Project中的build.gradle`）加入下面一行代码
-![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)
 <br>`classpath 'com.novoda:bintray-release:0.5.0'`
-<br>* 3.2、`此外若项目中有中文（注释及说明）,需加以下代码`
-![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
+<br><br>
+![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)
+* 3.2、`此外若项目中有中文（注释及说明）,需加以下代码`
 <br>　　`tasks.withType(Javadoc) {`
 <br>　　　　`options {`
 <br>　　　　　　`encoding "UTF-8"`
@@ -27,5 +27,5 @@ BaseLib
 <br>　　　　　　`links "http://docs.oracle.com/javase/7/docs/api"`
 <br>　　　　`}`
 <br>　　`}`
-<br>
-
+<br><br>
+![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
