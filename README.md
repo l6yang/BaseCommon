@@ -16,7 +16,7 @@ BaseLib
 [`可参考此篇文章`](http://blog.csdn.net/p10010/article/details/51336332)
 ### 3、项目配置
 * 3.1、在你的build.gradle（注意是`Project中的build.gradle`）
-<br>`加入下面一行代码`：classpath 'com.novoda:bintray-release:0.5.0'
+<br>`加入此行代码`：classpath 'com.novoda:bintray-release:0.5.0'
 <br>![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)<br>
 * 3.2、`此外若项目中有中文（注释及说明）,需加以下代码`
 <br>tasks.withType(Javadoc) {
