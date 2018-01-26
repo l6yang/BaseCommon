@@ -13,12 +13,7 @@ BaseLib
 <br>这里是没有填写组织名称的。可以使用第三方注册，常用的就是 github账号，需要注意：**如果github账号绑定的邮箱不是Gmail邮箱，Bintray无法注册成功**。（本人用的是Gmail邮箱，其他邮箱不知是否可用，若嫌麻烦Gmail麻烦，可以试一下）。
 <br>[`Gmail邮箱注册和登陆参考链接（亲测可用）`](https://jingyan.baidu.com/article/36d6ed1f63b9831bce48837f.html)
 * 1.2、注册成功后进入主页面，鼠标移至右上角用户名处，在弹出的对话框中点击**Edit Profile**，然后在左边的菜单栏点击**API Key**，再次输入密码即可看到你的API Key，点击show旁边的copy图标，即可将API Key复制到粘贴板。流程如下图：<br>
-|流程|图片|
-|-------------|:-------------:
-|流程1|![edit_profile](https://github.com/l6yang/BaseCommon/blob/master/images/edit_profile.png?raw=true) 
-|流程2|![api_key](https://github.com/l6yang/BaseCommon/blob/master/images/api_key.png?raw=true) 
-|流程3|![submit](https://github.com/l6yang/BaseCommon/blob/master/images/submit.png?raw=true)      
-|流程4|![copy](https://github.com/l6yang/BaseCommon/blob/master/images/copy.png?raw=true) 
+![api_key](https://github.com/l6yang/BaseCommon/blob/master/images/api_key.png?raw=true) 
 ### 2、GitHub官网：（此步可忽略，不推荐）https://github.com/
 [`可参考此篇文章`](http://blog.csdn.net/p10010/article/details/51336332)
 ### 3、项目配置
