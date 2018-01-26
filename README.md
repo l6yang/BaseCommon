@@ -10,7 +10,7 @@ BaseLib
 <br>`个人类型注册地址：`https://bintray.com/signup/oss
 <br>`个人类型注册地址：`https://bintray.com/signup/oss
 ![personal](https://github.com/l6yang/BaseCommon/blob/master/images/personal.png?raw=true)
-<br>这里是没有填写组织名称的。可以使用第三方注册，常用的就是 github账号，需要注意：如果github账号绑定的邮箱不是gmail邮箱，Bintray无法注册成功。所以这个时候你需要完成第一步然后通过gmail邮箱完成注册。
+<br>这里是没有填写组织名称的。可以使用第三方注册，常用的就是 github账号，需要注意：*如果github账号绑定的邮箱不是gmail邮箱，Bintray无法注册成功*。所以这个时候你需要注册gmail邮箱。
 <br>[`Gmail邮箱注册和登陆参考链接（亲测可用）`](https://jingyan.baidu.com/article/36d6ed1f63b9831bce48837f.html)
 ### 2、GitHub官网：（此步可忽略，不推荐）https://github.com/
 [`可参考此篇文章`](http://blog.csdn.net/p10010/article/details/51336332)
