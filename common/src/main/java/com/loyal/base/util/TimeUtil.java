@@ -118,8 +118,8 @@ public class TimeUtil implements Contacts {
         return str.toLowerCase().replace("上午", "").replace("下午", "").replace("am", "").replace("pm", "");
     }
 
-    public static String subEndTime(String time) {
-        String subTime = Str.replaceNull(time).trim();
+    public static String subEndTime(CharSequence timeSequence) {
+        String subTime = Str.replaceNull(timeSequence).trim();
         return TextUtils.isEmpty(subTime) ? "" : subTime.
                 replace("00:00:00", "").replace(".0", "").trim();
     }

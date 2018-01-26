@@ -1,12 +1,19 @@
 package com.loyal.base.sample.ui.activity;
 
+import android.Manifest;
+import android.view.View;
 import android.widget.TextView;
 
+import com.loyal.base.sample.FileUtil;
 import com.loyal.base.sample.R;
+import com.loyal.base.ui.activity.BasicPerMissionActivity;
+
+import java.io.File;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BasicPerMissionActivity.onItemPermissionListener {
     @BindView(R.id.textView)
     TextView textView;
 
@@ -18,10 +25,19 @@ public class MainActivity extends BaseActivity {
     @Override
     public void afterOnCreate() {
         textView.setText("Just from MainActivity");
+        requestPermission(100, this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override
-    public boolean isTransStatus() {
-        return false;
+    public void onItemPermissionResult(int reqCode, boolean successful) {
+        if (successful) {
+            FileUtil.createFileSys();
+        }
+    }
+
+    @OnClick({R.id.textView})
+    public void onClick(View view) {
+        FileUtil.deleteFileWithDir(new File(FileUtil.imagePath));
+        FileUtil.createDirs(new File(FileUtil.imagePath));
     }
 }

@@ -103,8 +103,8 @@ public abstract class BasicActivity extends AppCompatActivity implements IntentF
     }
 
     @Override
-    public String subEndTime(@NonNull String t) {
-        return TimeUtil.subEndTime(t);
+    public String subEndTime(@NonNull CharSequence timeSequence) {
+        return TimeUtil.subEndTime(timeSequence);
     }
 
     @Override

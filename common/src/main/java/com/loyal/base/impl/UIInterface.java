@@ -5,7 +5,7 @@ import android.support.annotation.StringRes;
 import android.widget.Spinner;
 
 public interface UIInterface {
-    String subEndTime(@NonNull String time);
+    String subEndTime(@NonNull CharSequence timeSequence);
 
     String getSpinSelectStr(Spinner spinner, @NonNull String methodName);
 
