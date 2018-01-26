@@ -23,7 +23,7 @@ BaseLib
 ### 3、项目配置
 * 3.1、在你的build.gradle（注意是`Project中的build.gradle`）
 <br>`加入此行代码`：classpath 'com.novoda:bintray-release:0.5.0'
-<br>![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)<br>
+<br>![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)
 * 3.2、`此外若项目中有中文（注释或说明）,需加以下代码（同样在Project中的build.gradle）`
 <br>tasks.withType(Javadoc) {
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;options {
@@ -33,6 +33,17 @@ BaseLib
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>}
 <br>![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
 * 3.3、`Library配置（library工程的build.gradle）`
-<br>`加入此行：`'com.novoda.bintray-release'
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+<br>`加入以下配置：`
+<br>apply plugin: 'com.novoda.bintray-release'
+publish {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repoName = 'base'           //bintray仓库名
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;userOrg = 'l6yang'           //bintray注册的用户名
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groupId = 'com.loyal'            //compile引用时的第1部分groupId
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;artifactId = 'baseCommon'       //compile引用时的第2部分项目名
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publishVersion = '1.0.0'       //compile引用时的第3部分版本号
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;desc = 'This is a baseLib for extents'//描述（可不写）
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;website = 'https://github.com/l6yang/BaseCommon' //github项目地址（可不写）
+}
+<br>完整配置如下图：
+![config](https://github.com/l6yang/BaseCommon/blob/master/images/config.png?raw=true)
+
