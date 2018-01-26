@@ -19,13 +19,12 @@ BaseLib
 <br>`classpath 'com.novoda:bintray-release:0.5.0'`,如图
 ![build.gradle](https://github.com/l6yang/BaseCommon/blob/master/images/build.png?raw=true)
 <br>此外若项目中有中文（注释及说明）,需加以下代码
-<br>`tasks.withType(Javadoc) {
-<br>        options {
-<br>            encoding "UTF-8"
-<br>            charSet 'UTF-8'
-<br>            links "http://docs.oracle.com/javase/7/docs/api"
-<br>        }
-<br>    }`,如图
-    <br>
-    ![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
+<br>&nbsp;`tasks.withType(Javadoc) {`
+<br>&nbsp;&nbsp;`options {`
+<br>&nbsp;&nbsp;&nbsp;`encoding "UTF-8"`
+<br>&nbsp;&nbsp;&nbsp;`charSet 'UTF-8'`
+<br>&nbsp;&nbsp;&nbsp;`links "http://docs.oracle.com/javase/7/docs/api"`
+<br>&nbsp;&nbsp;`}`
+<br>&nbsp;`}`,如图
+<br>![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
 
