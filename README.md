@@ -60,5 +60,5 @@ BaseLib
 * 4.2、依赖使用
 <br>等待审核通过后，将其引用到项目中即可。
 <br>compile（implementation） 'com.loyal:baseCommon:1.0.0'
-# **以上就是如何将自己的项目发布到JCenter**
+# --以上就是如何将自己的项目发布到JCenter--
 **2018年1月26日**
