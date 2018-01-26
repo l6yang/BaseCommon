@@ -29,7 +29,7 @@ BaseLib
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links "http://docs.oracle.com/javase/7/docs/api"
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>}
 <br>![utf8](https://github.com/l6yang/BaseCommon/blob/master/images/utf8.png?raw=true)
-* 3.3、`module配置（library-module中的build.gradle）`
+* 3.3、`Library配置（library工程的build.gradle）`
 <br>`加入此行：`'com.novoda.bintray-release'
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
