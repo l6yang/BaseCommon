@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'common'
+            keyPassword 'common'
+            storeFile file('E:/Studio Demo/BaseCommon/common.jks')
+            storePassword 'common'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.loyal.base.sample"
@@ -15,6 +23,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -32,5 +42,6 @@ dependencies {
     implementation project(':common')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.jakewharton:butterknife:8.8.1'
-
+    /**上传时程序时出现transformClassesWithDexForRelease错误
+     * 将其设置为Release模式并签名就好了（不知是什么原因）*/
 }
