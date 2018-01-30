@@ -15,11 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
-import com.loyal.base.impl.Contacts;
-import com.loyal.base.impl.Frag2ActListener;
+import com.loyal.base.impl.IContacts;
+import com.loyal.base.impl.IFrag2ActListener;
 import com.loyal.base.impl.IntentFrame;
-import com.loyal.base.impl.UIInterface;
-import com.loyal.base.ui.activity.BasicFragActivity;
+import com.loyal.base.impl.IUIInterface;
+import com.loyal.base.ui.activity.ABasicFragActivity;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.IntentUtil;
 import com.loyal.base.util.ObjectUtil;
@@ -27,10 +27,10 @@ import com.loyal.base.util.TimeUtil;
 import com.loyal.base.util.ToastUtil;
 
 /**
- * {@link BasicFragActivity#onFrag2Act(String)}
+ * {@link ABasicFragActivity#onFrag2Act(String)}
  */
-public abstract class BasicFragment extends Fragment implements IntentFrame.FragmentFrame, UIInterface, Contacts {
-    private Frag2ActListener mListener;
+public abstract class ABasicFragment extends Fragment implements IntentFrame.FragmentFrame, IUIInterface, IContacts {
+    private IFrag2ActListener mListener;
 
     public abstract
     @LayoutRes
@@ -40,16 +40,18 @@ public abstract class BasicFragment extends Fragment implements IntentFrame.Frag
 
     public abstract void bindViews(View view);
 
+    public abstract void unbind();
+
     protected IntentUtil builder;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Frag2ActListener) {
-            mListener = (Frag2ActListener) context;
+        if (context instanceof IFrag2ActListener) {
+            mListener = (IFrag2ActListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement Frag2ActListener");
+                    + " must implement IFrag2ActListener");
         }
     }
 
@@ -191,5 +193,11 @@ public abstract class BasicFragment extends Fragment implements IntentFrame.Frag
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbind();
     }
 }

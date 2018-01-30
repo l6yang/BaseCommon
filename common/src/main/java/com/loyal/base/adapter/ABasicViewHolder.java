@@ -3,17 +3,17 @@ package com.loyal.base.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public abstract class BasicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public abstract class ABasicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mItemLongClickListener;
 
     public abstract void bindView(View view);
 
-    public BasicViewHolder(View itemView, OnItemClickListener itemClickListener) {
+    public ABasicViewHolder(View itemView, OnItemClickListener itemClickListener) {
         this(itemView, itemClickListener, null);
     }
 
-    public BasicViewHolder(View itemView, OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener) {
+    public ABasicViewHolder(View itemView, OnItemClickListener itemClickListener, OnItemLongClickListener itemLongClickListener) {
         super(itemView);
         bindView(itemView);
         mOnItemClickListener = itemClickListener;

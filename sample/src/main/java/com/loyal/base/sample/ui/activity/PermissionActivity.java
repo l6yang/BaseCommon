@@ -3,11 +3,11 @@ package com.loyal.base.sample.ui.activity;
 import android.Manifest;
 
 import com.loyal.base.sample.R;
-import com.loyal.base.ui.activity.BasicPerMissionActivity;
+import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import butterknife.ButterKnife;
 
-public class PermissionActivity extends BasicPerMissionActivity implements BasicPerMissionActivity.onAllPermissionsListener {
+public class PermissionActivity extends ABasicPerMissionActivity implements ABasicPerMissionActivity.onAllPermissionsListener {
 
     @Override
     protected int actLayoutRes() {

@@ -1,10 +1,10 @@
 package com.loyal.base.sample.ui.activity;
 
-import com.loyal.base.ui.activity.BasicFragActivity;
+import com.loyal.base.ui.activity.ABasicFragActivity;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseFragActivity extends BasicFragActivity {
+public abstract class ABaseFragActivity extends ABasicFragActivity {
     @Override
     public void bindViews() {
         ButterKnife.bind(this);

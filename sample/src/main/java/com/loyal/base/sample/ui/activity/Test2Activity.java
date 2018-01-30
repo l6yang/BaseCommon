@@ -11,14 +11,14 @@ import android.view.MenuItem;
 import com.loyal.base.sample.R;
 import com.loyal.base.sample.ViewAdapter;
 import com.loyal.base.sample.ui.fragment.BlankFragment;
-import com.loyal.base.ui.activity.BasicPerMissionActivity;
+import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class Test2Activity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, BasicPerMissionActivity.onItemPermissionListener {
+public class Test2Activity extends ABaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, ABasicPerMissionActivity.onItemPermissionListener {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.navigation)

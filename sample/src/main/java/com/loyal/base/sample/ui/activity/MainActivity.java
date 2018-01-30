@@ -6,14 +6,14 @@ import android.widget.TextView;
 
 import com.loyal.base.sample.FileUtil;
 import com.loyal.base.sample.R;
-import com.loyal.base.ui.activity.BasicPerMissionActivity;
+import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements BasicPerMissionActivity.onItemPermissionListener {
+public class MainActivity extends ABaseActivity implements ABasicPerMissionActivity.onItemPermissionListener {
     @BindView(R.id.textView)
     TextView textView;
 

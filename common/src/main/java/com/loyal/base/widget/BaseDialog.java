@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.loyal.base.R;
-import com.loyal.base.impl.Contacts;
+import com.loyal.base.impl.IContacts;
 
-public class BaseDialog extends Dialog implements Contacts {
+public class BaseDialog extends Dialog implements IContacts {
 
     private BaseDialog(@NonNull Context context) {
         this(context, R.style.DialogTheme);

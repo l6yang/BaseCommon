@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 import com.loyal.base.sample.R;
 import com.loyal.base.sample.ui.activity.Test2Activity;
-import com.loyal.base.ui.fragment.BasicPerMissionFragment;
+import com.loyal.base.ui.fragment.ABasicPerMissionFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class BlankFragment extends BaseFragment implements BasicPerMissionFragment.onItemPermissionListener {
+public class BlankFragment extends ABaseFragment implements ABasicPerMissionFragment.onItemPermissionListener {
     private static final String ARG_PARAM1 = "param1";
 
     private String mParam1;

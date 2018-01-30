@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public interface Contacts {
+public interface IContacts {
 
     class Str {
         public static final String TIME_ALL = "yyyy-MM-dd HH:mm:ss";

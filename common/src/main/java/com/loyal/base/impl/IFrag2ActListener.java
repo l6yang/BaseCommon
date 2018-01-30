@@ -1,5 +1,5 @@
 package com.loyal.base.impl;
 
-public interface Frag2ActListener {
+public interface IFrag2ActListener {
     void onFrag2Act(String uri);
 }

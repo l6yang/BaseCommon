@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.loyal.base.impl.Contacts;
+import com.loyal.base.impl.IContacts;
 import com.loyal.base.widget.BaseDialog;
 
-public class ToastUtil implements Contacts {
+public class ToastUtil implements IContacts {
     private static Toast toast = null;
 
     public static void showToast(@NonNull Context context, @NonNull String text) {

@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.widget.Spinner;
 
 import com.loyal.base.impl.IntentFrame;
-import com.loyal.base.impl.UIInterface;
+import com.loyal.base.impl.IUIInterface;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.IntentUtil;
 import com.loyal.base.util.ObjectUtil;
@@ -19,7 +19,7 @@ import com.loyal.base.util.StateBarUtil;
 import com.loyal.base.util.TimeUtil;
 import com.loyal.base.util.ToastUtil;
 
-public abstract class BasicActivity extends AppCompatActivity implements IntentFrame.ActivityFrame, UIInterface {
+public abstract class ABasicActivity extends AppCompatActivity implements IntentFrame.ActivityFrame, IUIInterface {
 
     protected abstract
     @LayoutRes

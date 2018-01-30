@@ -2,14 +2,14 @@ package com.loyal.base.util;
 
 import android.text.TextUtils;
 
-import com.loyal.base.impl.Contacts;
+import com.loyal.base.impl.IContacts;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class TimeUtil implements Contacts {
+public class TimeUtil implements IContacts {
     public static String getWeek() {
         SimpleDateFormat format = new SimpleDateFormat(Str.TIME_WEEK, Locale.CHINA);
         return replaceTime(format.format(new Date()));

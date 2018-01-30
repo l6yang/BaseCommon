@@ -8,25 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.loyal.base.impl.Contacts;
+import com.loyal.base.impl.IContacts;
 import com.loyal.base.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BasicRecycleAdapter<VH extends BasicViewHolder, T> extends RecyclerView.Adapter<VH> implements Contacts {
+public abstract class ABasicRecycleAdapter<VH extends ABasicViewHolder, T> extends RecyclerView.Adapter<VH> implements IContacts {
     private int mCount = 0;
     private LayoutInflater mInflater;
-    protected BasicViewHolder.OnItemClickListener mOnItemClickListener;
-    protected BasicViewHolder.OnItemLongClickListener mOnItemLongClickListener;
+    protected ABasicViewHolder.OnItemClickListener mOnItemClickListener;
+    protected ABasicViewHolder.OnItemLongClickListener mOnItemLongClickListener;
     private List<T> arrayList;
     private Context context;
 
-    public BasicRecycleAdapter(Context context) {
+    public ABasicRecycleAdapter(Context context) {
         this(context, null);
     }
 
-    public BasicRecycleAdapter(Context context, List<T> arrList) {
+    public ABasicRecycleAdapter(Context context, List<T> arrList) {
         this.context = context;
         if (null == arrList)
             arrList = new ArrayList<>();
@@ -90,11 +90,11 @@ public abstract class BasicRecycleAdapter<VH extends BasicViewHolder, T> extends
         return mCount;
     }
 
-    public void setOnItemClickListener(BasicViewHolder.OnItemClickListener itemClickListener) {
+    public void setOnItemClickListener(ABasicViewHolder.OnItemClickListener itemClickListener) {
         this.mOnItemClickListener = itemClickListener;
     }
 
-    public boolean setOnItemLongClickListener(BasicViewHolder.OnItemLongClickListener listener) {
+    public boolean setOnItemLongClickListener(ABasicViewHolder.OnItemLongClickListener listener) {
         this.mOnItemLongClickListener = listener;
         return false;
     }

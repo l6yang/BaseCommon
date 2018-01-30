@@ -8,7 +8,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import io.reactivex.functions.Consumer;
 
-public abstract class BasicPerMissionActivity extends BasicFragActivity {
+public abstract class ABasicPerMissionActivity extends ABasicFragActivity {
     public interface onItemPermissionListener {
         void onItemPermissionResult(@IntRange(from = 2) int reqCode, boolean successful);
     }

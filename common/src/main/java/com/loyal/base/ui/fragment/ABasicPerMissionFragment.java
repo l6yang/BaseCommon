@@ -9,7 +9,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import io.reactivex.functions.Consumer;
 
-public abstract class BasicPerMissionFragment extends BasicFragment {
+public abstract class ABasicPerMissionFragment extends ABasicFragment {
     public interface onItemPermissionListener {
         void onItemPermissionResult(@IntRange(from = 2) int reqCode, boolean successful);
     }

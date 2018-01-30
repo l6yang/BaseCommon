@@ -2,12 +2,12 @@ package com.loyal.base.sample.ui.fragment;
 
 import android.view.View;
 
-import com.loyal.base.ui.fragment.BasicPerMissionFragment;
+import com.loyal.base.ui.fragment.ABasicPerMissionFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseFragment extends BasicPerMissionFragment {
+public abstract class ABaseFragment extends ABasicPerMissionFragment {
     private Unbinder unbinder;
 
     @Override
@@ -16,8 +16,7 @@ public abstract class BaseFragment extends BasicPerMissionFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void unbind() {
         if (null != unbinder)
             unbinder.unbind();
     }
