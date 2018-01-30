@@ -43,7 +43,7 @@ publish {
     userOrg = 'l6yang'          //bintray注册的用户名
     groupId = 'com.loyal'       //compile引用时的第1部分groupId
     artifactId = 'baseCommon'   //compile引用时的第2部分项目名
-    publishVersion = '1.0.4'    //compile引用时的第3部分版本号
+    publishVersion = '1.0.5'    //compile引用时的第3部分版本号
     desc = 'This is a baseLib for extents'//描述（可不写）
     repoName = "base"//创建的maven仓库名称
     website = 'https://github.com/l6yang/BaseCommon'//github项目地址（可不写）
