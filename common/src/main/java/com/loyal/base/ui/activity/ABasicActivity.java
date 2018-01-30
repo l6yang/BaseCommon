@@ -39,8 +39,8 @@ public abstract class ABasicActivity extends AppCompatActivity implements Intent
         setContentView(actLayoutRes());
         bindViews();
         StateBarUtil.setTranslucentStatus(this, isTransStatus());//沉浸式状态栏
-        afterOnCreate();
         hasIntentParams(false);
+        afterOnCreate();
     }
 
     /***/
