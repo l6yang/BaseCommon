@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.loyal.base.impl.IContacts;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -56,15 +55,11 @@ public class TimeUtil implements IContacts {
                 return true;
             if (TextUtils.equals(startTime, endTime))
                 return true;
-            try {
-                Date start = sdf.parse(startTime);
-                Date end = sdf.parse(endTime);
-                return end.after(start);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return false;
-            }
+            Date start = sdf.parse(startTime);
+            Date end = sdf.parse(endTime);
+            return end.after(start);
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -76,17 +71,13 @@ public class TimeUtil implements IContacts {
                 return -1;
             if (TextUtils.equals(startTime, endTime))
                 return 1;
-            try {
-                Date start = sdf.parse(replaceTime(startTime));
-                Date end = sdf.parse(replaceTime(endTime));
-                long span = (end.getTime() - start.getTime()) / 1000;
-                int day = (int) span / (24 * 3600);
-                return day >= 0 ? day + 1 : -1;
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return -1;
-            }
+            Date start = sdf.parse(replaceTime(startTime));
+            Date end = sdf.parse(replaceTime(endTime));
+            long span = (end.getTime() - start.getTime()) / 1000;
+            int day = (int) span / (24 * 3600);
+            return day >= 0 ? day + 1 : -1;
         } catch (Exception e) {
+            e.printStackTrace();
             return -1;
         }
     }
@@ -98,18 +89,14 @@ public class TimeUtil implements IContacts {
                 return -1;
             if (TextUtils.equals(startTime, endTime))
                 return 0;
-            try {
-                Date start = sdf.parse(replaceTime(startTime));
-                Date end = sdf.parse(replaceTime(endTime));
-                long span = (end.getTime() - start.getTime()) / 1000;
-                float hour = (float) span / (3600);
-                hour = (float) Math.round(hour * 100) / 100;
-                return hour >= 0 ? hour : -1;
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return -1;
-            }
+            Date start = sdf.parse(replaceTime(startTime));
+            Date end = sdf.parse(replaceTime(endTime));
+            long span = (end.getTime() - start.getTime()) / 1000;
+            float hour = (float) span / (3600);
+            hour = (float) Math.round(hour * 100) / 100;
+            return hour >= 0 ? hour : -1;
         } catch (Exception e) {
+            e.printStackTrace();
             return -1;
         }
     }
