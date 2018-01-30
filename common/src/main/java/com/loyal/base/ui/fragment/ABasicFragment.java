@@ -15,10 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
-import com.loyal.base.impl.IContacts;
 import com.loyal.base.impl.IFrag2ActListener;
-import com.loyal.base.impl.IntentFrame;
 import com.loyal.base.impl.IUIInterface;
+import com.loyal.base.impl.IntentFrame;
 import com.loyal.base.ui.activity.ABasicFragActivity;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.IntentUtil;
@@ -29,7 +28,7 @@ import com.loyal.base.util.ToastUtil;
 /**
  * {@link ABasicFragActivity#onFrag2Act(String)}
  */
-public abstract class ABasicFragment extends Fragment implements IntentFrame.FragmentFrame, IUIInterface, IContacts {
+public abstract class ABasicFragment extends Fragment implements IntentFrame.FragmentFrame, IUIInterface {
     private IFrag2ActListener mListener;
 
     public abstract

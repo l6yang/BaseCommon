@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.Spinner;
 
-public interface IUIInterface {
+public interface IUIInterface extends IContacts{
     String subEndTime(@NonNull CharSequence timeSequence);
 
     String getSpinSelectStr(Spinner spinner, @NonNull String methodName);
