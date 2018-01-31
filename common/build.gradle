@@ -34,6 +34,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.8'
     compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.github.ikidou:TypeBuilder:1.0'/**Gson泛型*/
     /**zxing、gson、rxpermissions、rxjava2这里是用compile而不是
      * implementation的原因是我们要通过module将依赖包暴露出去，供其他项目调用，
      * 不然项目还得再次添加依赖*/

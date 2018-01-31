@@ -15,6 +15,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
     //加上这些
     tasks.withType(Javadoc) {

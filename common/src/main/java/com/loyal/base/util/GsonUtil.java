@@ -7,13 +7,44 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.loyal.base.beans.GsonBean;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import ikidou.reflect.TypeBuilder;
 
 public class GsonUtil {
     private static Gson gson = new Gson();
 
+    /**
+     * {@link #json2BeanObject(String, Class, Class)}
+     */
+    public static <T> GsonBean<List<T>> json2BeanArray(String json, Class<? extends GsonBean> rowClass, Class<T> clazz) {
+        Type type = TypeBuilder
+                .newInstance(rowClass)
+                .beginSubType(List.class)
+                .addTypeParam(clazz)
+                .endSubType()
+                .build();
+        return new Gson().fromJson(json, type);
+    }
+
+    /**
+     * 泛型
+     *
+     * @param clazz GsonBean中的泛型
+     */
+    public static <T> GsonBean<T> json2BeanObject(String json, Class<? extends GsonBean> rowClass, Class<T> clazz) {
+        Type type = TypeBuilder
+                .newInstance(rowClass)
+                .addTypeParam(clazz)
+                .build();
+        return gson.fromJson(json, type);
+    }
+
+    //----------------------------------
     public static <T> T json2Bean(String json, Class<T> tClass) {
         return gson.fromJson(json, tClass);
     }
