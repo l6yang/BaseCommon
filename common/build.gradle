@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.app.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        minSdkVersion rootProject.ext.app.minSdkVersion
+        targetSdkVersion rootProject.ext.app.targetSdkVersion
+        versionCode rootProject.ext.app.versionCode
+        versionName rootProject.ext.app.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,19 +23,19 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportVersion}"
-    implementation "com.android.support:design:${rootProject.ext.supportVersion}"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation rootProject.ext.dependencies.appcompat
+    implementation rootProject.ext.dependencies.design
+    implementation rootProject.ext.dependencies.constraint
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.google.zxing:core:3.3.1'
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.8'
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.github.ikidou:TypeBuilder:1.0'/**Gson泛型*/
-    /**zxing、gson、rxpermissions、rxjava2这里是用compile而不是
+    compile rootProject.ext.dependencies.zxing
+    compile rootProject.ext.dependencies.rxpermissions
+    compile rootProject.ext.dependencies.rxandroid
+    compile rootProject.ext.dependencies.rxjava
+    compile rootProject.ext.dependencies.gson
+    compile rootProject.ext.dependencies.gsonType
+    /**这里是用compile而不是
      * implementation的原因是我们要通过module将依赖包暴露出去，供其他项目调用，
      * 不然项目还得再次添加依赖*/
 }
@@ -45,7 +45,7 @@ publish {
     groupId = 'com.loyal'       //compile引用时的第1部分groupId
     artifactId = 'baseCommon'   //compile引用时的第2部分项目名
     publishVersion = '1.0.5'    //compile引用时的第3部分版本号
-    desc = 'This is a baseLib for extents'//描述（可不写）
+    desc = 'This is a baseLib for extends'//描述（可不写）
     repoName = "base"//创建的maven仓库名称
     website = 'https://github.com/l6yang/BaseCommon'//github项目地址（可不写）
     //gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME

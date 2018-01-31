@@ -1,0 +1,26 @@
+ext {
+    app = [
+            compileSdkVersion: 27,
+            minSdkVersion    : 15,
+            targetSdkVersion : 27,
+            versionCode      : 1,
+            versionName      : "1.0.0",
+            supportVersion   : "27.0.2",
+            constraint       : "1.0.2"
+    ]
+    dependencies = [
+            appcompat           : "com.android.support:appcompat-v7:${app.supportVersion}",
+            constraint          : "com.android.support.constraint:constraint-layout:${app.constraint}",
+            v4                  : "com.android.support:support-v4:${app.supportVersion}",
+            design              : "com.android.support:design:${app.supportVersion}",
+            drawable            : "com.android.support:support-vector-drawable:${app.supportVersion}",
+            butterknife         : 'com.jakewharton:butterknife:8.8.1',
+            butterknifeProcessor: 'com.jakewharton:butterknife-compiler:8.8.1',
+            gson                : 'com.google.code.gson:gson:2.8.2',
+            gsonType            : 'com.github.ikidou:TypeBuilder:1.0',//gson泛型
+            rxandroid           : 'io.reactivex.rxjava2:rxandroid:2.0.1',
+            rxjava              : 'io.reactivex.rxjava2:rxjava:2.1.8',
+            rxpermissions       : 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar',
+            zxing               : 'com.google.zxing:core:3.3.1',
+    ]
+}
