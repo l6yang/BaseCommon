@@ -1,5 +1,6 @@
 # BaseCommon
-BaseLib<br>`[gson泛型(com.github.ikidou:TypeBuilder:1.0依赖问题)`](https://jitpack.io/#ikidou/TypeBuilder/1.0)
+BaseLib
+<br>[`com.github.ikidou:TypeBuilder:1.0依赖问题`](https://jitpack.io/#ikidou/TypeBuilder/1.0)
 # 如何将自己的项目发布到Jcenter（Bintray）
 <!--##### 一、准备工作-->
 ### 1、Bintray官网：https://bintray.com/
