@@ -78,9 +78,9 @@ public class TestActivity extends ABaseFragActivity implements BottomNavigationV
     }
 
     @Override
-    public void onFrag2Act(String uri) {
-        super.onFrag2Act(uri);
-        if (TextUtils.equals("camera",uri)){
+    public void onFrag2Act(String tag, Object... objectParam) {
+        super.onFrag2Act(tag, objectParam);
+        if (TextUtils.equals("camera", tag)) {
 
         }
     }

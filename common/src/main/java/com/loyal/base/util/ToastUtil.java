@@ -15,31 +15,21 @@ import com.loyal.base.widget.BaseDialog;
 public class ToastUtil implements IContacts {
     private static Toast toast = null;
 
-    public static void showToast(@NonNull Context context, @NonNull String text) {
+    public static void showToast(@NonNull Context context, @NonNull CharSequence sequence) {
         if (toast == null)
-            toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(context, sequence, Toast.LENGTH_SHORT);
         else {
-            toast.setText(text);
+            toast.setText(sequence);
             toast.setDuration(Toast.LENGTH_SHORT);
         }
         toast.show();
-    }
-
-    public static void showToast(@NonNull Context context, @NonNull CharSequence text) {
-        showToast(context, text.toString());
     }
 
     public static void showToast(@NonNull Context context, @StringRes int resId) {
-        if (toast == null)
-            toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
-        else {
-            toast.setText(resId);
-            toast.setDuration(Toast.LENGTH_SHORT);
-        }
-        toast.show();
+       showToast(context,context.getString(resId));
     }
 
-    public static void showDialog(final Context context, final String content, final boolean isFinish) {
+    public static void showDialog(final Context context, final CharSequence content, final boolean isFinish) {
         BaseDialog.Builder builder = new BaseDialog.Builder(context);
         builder.setContent(content).setOutsideCancel(false).setOutsideCancel(false);
         builder.setBottomBtnType(isFinish ? TYPE.RIGHT : TYPE.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new BaseDialog.DialogClickListener() {

@@ -80,9 +80,9 @@ public class Test2Activity extends ABaseActivity implements BottomNavigationView
     }
 
     @Override
-    public void onFrag2Act(String uri) {
-        super.onFrag2Act(uri);
-        if (TextUtils.equals("camera", uri)) {
+    public void onFrag2Act(String tag, Object... objectParam) {
+        super.onFrag2Act(tag, objectParam);
+        if (TextUtils.equals("camera", tag)) {
             requestPermission(9, this, Manifest.permission.CAMERA);
         }
     }

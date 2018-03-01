@@ -13,25 +13,25 @@ public interface IUIInterface extends IContacts{
 
     String decodeStr2Utf(@NonNull String string);
 
-    void showToast(@NonNull String text);
+    void showToast(@NonNull CharSequence sequence);
 
     void showToast(@StringRes int resId);
 
     void showErrorToast(@StringRes int resId, Throwable e);
 
-    void showErrorToast(@NonNull String text, Throwable e);
+    void showErrorToast(@NonNull CharSequence sequence, Throwable e);
 
-    void showErrorDialog(@NonNull String text, boolean finish);
+    void showErrorDialog(@NonNull CharSequence sequence, boolean finish);
 
-    void showErrorDialog(@NonNull String text);
+    void showErrorDialog(@NonNull CharSequence sequence);
 
-    void showErrorDialog(@NonNull String text, Throwable e, boolean finish);
+    void showErrorDialog(@NonNull CharSequence sequence, Throwable e, boolean finish);
 
-    void showErrorDialog(@NonNull String text, Throwable e);
+    void showErrorDialog(@NonNull CharSequence sequence, Throwable e);
 
-    void showDialog(@NonNull String text);
+    void showDialog(@NonNull CharSequence sequence);
 
-    void showDialog(@NonNull String text, boolean finish);
+    void showDialog(@NonNull CharSequence sequence, boolean finish);
 
     String replaceNull(CharSequence sequence);
 

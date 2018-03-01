@@ -26,7 +26,7 @@ import com.loyal.base.util.TimeUtil;
 import com.loyal.base.util.ToastUtil;
 
 /**
- * {@link ABasicFragActivity#onFrag2Act(String)}
+ * {@link ABasicFragActivity#onFrag2Act(String, Object...)}
  */
 public abstract class ABasicFragment extends Fragment implements IntentFrame.FragmentFrame, IUIInterface {
     private IFrag2ActListener mListener;
@@ -64,9 +64,9 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         return view;
     }
 
-    public void onFrag2Act(String uri) {
+    public void onFrag2Act(String tag, Object... objectParam) {
         if (null != mListener) {
-            mListener.onFrag2Act(uri);
+            mListener.onFrag2Act(tag, objectParam);
         }
     }
 
@@ -93,10 +93,10 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     @Override
-    public void showToast(@NonNull String text) {
+    public void showToast(@NonNull CharSequence sequence) {
         Context context = getActivity();
         if (null != context)
-            ToastUtil.showToast(context, text);
+            ToastUtil.showToast(context, sequence);
     }
 
     @Override
@@ -105,27 +105,28 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     @Override
-    public void showErrorToast(@NonNull String text, Throwable e) {
+    public void showErrorToast(@NonNull CharSequence sequence, Throwable e) {
 
     }
 
     @Override
     public void showToast(int resId) {
+        onFrag2Act("showToast", resId);
         Context context = getActivity();
         if (null != context)
             ToastUtil.showToast(context, context.getString(resId));
     }
 
     @Override
-    public void showDialog(@NonNull String text) {
-        showDialog(text, false);
+    public void showDialog(@NonNull CharSequence sequence) {
+        showDialog(sequence, false);
     }
 
     @Override
-    public void showDialog(@NonNull String text, boolean finish) {
+    public void showDialog(@NonNull CharSequence sequence, boolean finish) {
         Context context = getActivity();
         if (null != context)
-            ToastUtil.showDialog(context, replaceNull(text), finish);
+            ToastUtil.showDialog(context, replaceNull(sequence), finish);
     }
 
     @Override
@@ -154,25 +155,25 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     @Override
-    public void showErrorDialog(@NonNull String text) {
-        showErrorDialog(text, false);
+    public void showErrorDialog(@NonNull CharSequence sequence) {
+        showErrorDialog(sequence, false);
     }
 
     @Override
-    public void showErrorDialog(@NonNull String text, Throwable e, boolean finish) {
+    public void showErrorDialog(@NonNull CharSequence sequence, Throwable e, boolean finish) {
         String error = ConnectUtil.getError(e);
-        String str = replaceNull(text) + (TextUtils.isEmpty(error) ? "" : "\n" + error);
+        String str = replaceNull(sequence) + (TextUtils.isEmpty(error) ? "" : "\n" + error);
         showDialog(replaceNull(str), finish);
     }
 
     @Override
-    public void showErrorDialog(@NonNull String text, Throwable e) {
-        showErrorDialog(text, e, false);
+    public void showErrorDialog(@NonNull CharSequence sequence, Throwable e) {
+        showErrorDialog(sequence, e, false);
     }
 
     @Override
-    public void showErrorDialog(@NonNull String text, boolean finish) {
-        showDialog(replaceNull(text), finish);
+    public void showErrorDialog(@NonNull CharSequence sequence, boolean finish) {
+        showDialog(replaceNull(sequence), finish);
     }
 
     public Intent getIntent() {
