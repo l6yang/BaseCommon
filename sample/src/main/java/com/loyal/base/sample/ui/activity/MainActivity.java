@@ -13,7 +13,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends ABaseActivity implements ABasicPerMissionActivity.onItemPermissionListener {
+public class MainActivity extends ABaseActivity implements ABasicPerMissionActivity.OnItemPermissionListener {
     @BindView(R.id.textView)
     TextView textView;
 
@@ -25,7 +25,7 @@ public class MainActivity extends ABaseActivity implements ABasicPerMissionActiv
     @Override
     public void afterOnCreate() {
         textView.setText("Just from MainActivity");
-        requestPermission(100, this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        requestPermission(PerMission.storagePermission, this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override

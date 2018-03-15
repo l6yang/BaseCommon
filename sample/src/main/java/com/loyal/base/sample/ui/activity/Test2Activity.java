@@ -18,7 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class Test2Activity extends ABaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, ABasicPerMissionActivity.onItemPermissionListener {
+public class Test2Activity extends ABaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, ABasicPerMissionActivity.OnItemPermissionListener {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.navigation)

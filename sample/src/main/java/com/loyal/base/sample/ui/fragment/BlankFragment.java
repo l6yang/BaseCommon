@@ -58,9 +58,9 @@ public class BlankFragment extends ABaseFragment implements ABasicPerMissionFrag
             case R.id.message:
                 String tag = (String) v.getTag();
                 if (TextUtils.equals("memory", tag)) {
-                    requestPermission(5, this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    requestPermission(PerMission.storagePermission, this,  PerMission.WRITE_EXTERNAL_STORAGE);
                 } else if (TextUtils.equals("location", tag)) {
-                    requestPermission(5, this, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+                    requestPermission(PerMission.locationPermission, this, PerMission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
                 } else if (TextUtils.equals("phone", tag)) {
                     requestPermission(5, this, Manifest.permission.READ_PHONE_STATE);
                 } else {
