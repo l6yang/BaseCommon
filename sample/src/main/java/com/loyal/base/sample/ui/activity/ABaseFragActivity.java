@@ -9,9 +9,4 @@ public abstract class ABaseFragActivity extends ABasicFragActivity {
     public void bindViews() {
         ButterKnife.bind(this);
     }
-
-    @Override
-    public boolean isTransStatus() {
-        return false;
-    }
 }

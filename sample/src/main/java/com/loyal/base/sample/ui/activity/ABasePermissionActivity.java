@@ -10,8 +10,4 @@ public abstract class ABasePermissionActivity extends ABasicPerMissionActivity {
         ButterKnife.bind(this);
     }
 
-    @Override
-    public boolean isTransStatus() {
-        return false;
-    }
 }

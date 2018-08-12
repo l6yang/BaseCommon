@@ -34,5 +34,4 @@ public interface IUiCommandImpl extends IBaseContacts {
     void showDialog(@NonNull CharSequence sequence, boolean finish);
 
     String replaceNull(CharSequence sequence);
-
 }

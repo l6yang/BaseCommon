@@ -3,6 +3,7 @@ package com.loyal.base.impl;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
@@ -24,10 +25,11 @@ public interface IBaseContacts {
         public static final String YEAR_MONTH = "yyyy-MM";
         public static final String ipAdd = "192.168.0.1";
         public static final String port = "9080";
-        public static final String http = "http://";
-        public static final String https = "https://";
-        public static final String action = "app.do?method=";
-        public static final String nameSpace = "/test/";
+        public static final String http = "http";
+        public static final String https = "https";
+        public static final String action = "android.do?method=";
+        public static final String nameSpace = "command";
+        public static final String baseUrl = String.format("%s://%s:%s/%s/", http, ipAdd, port, nameSpace);
 
         public static String replaceNull(CharSequence sequence) {
             return TextUtils.isEmpty(sequence) ? "" : sequence.toString().trim();
@@ -91,7 +93,18 @@ public interface IBaseContacts {
 
         @StringDef({NONE, LEFT, RIGHT})
         @Retention(RetentionPolicy.SOURCE)
-        public @interface status {
+        public @interface source {
+        }
+    }
+
+    final class StatusBarImpl {
+        public static final int NONE = 0x00000000;
+        public static final int ImmerBar = 0x00000002;
+        public static final int StateBar = 0x00000004;
+
+        @IntDef({NONE, ImmerBar, StateBar})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface source {
         }
     }
 }

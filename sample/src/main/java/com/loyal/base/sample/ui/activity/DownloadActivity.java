@@ -2,34 +2,31 @@ package com.loyal.base.sample.ui.activity;
 
 import android.Manifest;
 import android.Manifest.permission;
+import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.loyal.base.impl.OnMultiplePermissionsListener;
+import com.loyal.base.sample.FileUtil;
 import com.loyal.base.sample.R;
+import com.loyal.base.sample.notify.UpdateNotification;
 import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import butterknife.ButterKnife;
 
-public class AllPermissionActivity extends ABasicPerMissionActivity implements  OnMultiplePermissionsListener {
+public class DownloadActivity extends ABasicPerMissionActivity implements OnMultiplePermissionsListener {
 
     @Override
     protected int actLayoutRes() {
-        return R.layout.activity_all_permission;
+        return R.layout.activity_download;
     }
 
     @Override
     public void afterOnCreate() {
-        /*allPermissions(this, singlePermission.WRITE_EXTERNAL_STORAGE,singlePermission.READ_EXTERNAL_STORAGE,
-                singlePermission.READ_PHONE_STATE,singlePermission.CAMERA,singlePermission.ACCESS_COARSE_LOCATION,singlePermission.ACCESS_FINE_LOCATION);
-    */
-        multiplePermissions(this, permission.WRITE_EXTERNAL_STORAGE, permission.READ_EXTERNAL_STORAGE,
+        /*multiplePermissions(this, permission.WRITE_EXTERNAL_STORAGE, permission.READ_EXTERNAL_STORAGE,
                 permission.CAMERA, permission.READ_PHONE_STATE, permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION);
-
-    }
-
-    @Override
-    public boolean isTransStatus() {
-        return false;
+        */
+        multiplePermissions(this, permission.WRITE_EXTERNAL_STORAGE, permission.READ_EXTERNAL_STORAGE);
     }
 
     @Override
@@ -41,6 +38,7 @@ public class AllPermissionActivity extends ABasicPerMissionActivity implements  
     public void onMultiplePermissions(String permission, boolean successful, boolean shouldShow) {
         if (TextUtils.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE, permission)) {
             if (successful) {
+                FileUtil.createFileSys();
                 System.out.println("内存#成功获取权限");
             } else if (shouldShow)
                 System.out.println("内存#本次拒绝，下次接着请求");
@@ -81,5 +79,12 @@ public class AllPermissionActivity extends ABasicPerMissionActivity implements  
                 else System.out.println("内存#彻底失败");
                 break;
         }*/
+    }
+
+    public void onClick(View view) {
+        Intent intent = new Intent();
+        String apkUrl = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
+        intent.putExtra("apkUrl", apkUrl);
+        UpdateNotification.notify(this, intent);
     }
 }

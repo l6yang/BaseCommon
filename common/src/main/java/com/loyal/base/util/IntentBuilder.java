@@ -11,16 +11,16 @@ import android.support.v4.app.FragmentActivity;
 
 import com.loyal.base.impl.IntentFrame;
 
-public class IntentUtil extends Intent implements IntentFrame.ActFrame, IntentFrame.FragFrame {
+public class IntentBuilder extends Intent implements IntentFrame.ActFrame, IntentFrame.FragFrame {
     private Activity activity;
     private Fragment fragment;
 
     /**
      * 下一个Activity收不到上一个Activity中Intent携带的参数
      *
-     * @see #IntentUtil(Activity)
+     * @see #IntentBuilder(Activity)
      */
-    public IntentUtil(Activity activity) {
+    public IntentBuilder(Activity activity) {
         super();
         initActivity(activity);
     }
@@ -30,7 +30,7 @@ public class IntentUtil extends Intent implements IntentFrame.ActFrame, IntentFr
      *               first：putExtras(intent);
      *               then：putExtra("",xxxx);
      */
-    public IntentUtil(Activity activity, Intent intent) {
+    public IntentBuilder(Activity activity, Intent intent) {
         super(intent);
         initActivity(activity);
     }
@@ -39,12 +39,12 @@ public class IntentUtil extends Intent implements IntentFrame.ActFrame, IntentFr
         this.activity = activity;
     }
 
-    public IntentUtil(Fragment fragment) {
+    public IntentBuilder(Fragment fragment) {
         super();
         initFragment(fragment);
     }
 
-    public IntentUtil(Fragment fragment, Intent intent) {
+    public IntentBuilder(Fragment fragment, Intent intent) {
         super(intent);
         initFragment(fragment);
     }

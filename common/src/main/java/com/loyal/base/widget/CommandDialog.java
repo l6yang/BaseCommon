@@ -1,32 +1,27 @@
 package com.loyal.base.widget;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.loyal.base.R;
+import com.loyal.base.impl.CommandViewClickListener;
 import com.loyal.base.impl.IBaseContacts;
 
-public class BaseDialog extends Dialog implements IBaseContacts {
+public class CommandDialog extends AppCompatDialog implements IBaseContacts {
 
-    private BaseDialog(@NonNull Context context) {
+    private CommandDialog(@NonNull Context context) {
         this(context, R.style.dialogTheme);
     }
 
-    private BaseDialog(@NonNull Context context, @StyleRes int themeResId) {
+    private CommandDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     private Object objTag;
@@ -43,13 +38,13 @@ public class BaseDialog extends Dialog implements IBaseContacts {
         @Override
         public void onClick(View v) {
             if (null != clickListener)
-                clickListener.onClick(baseDialog, v, objectTag);
+                clickListener.onViewClick(baseDialog, v, objectTag);
         }
 
         private Context mContext;
         private CharSequence sequenceTitle = "温馨提示", sequenceContent, sequenceOk, sequenceCancel;
-        private DialogClickListener clickListener;
-        private BaseDialog baseDialog;
+        private CommandViewClickListener clickListener;
+        private CommandDialog baseDialog;
         private String statusType = TypeImpl.NONE;
         private TextView textTitle, textContent;
         private View layoutOk, layoutCancel;
@@ -154,16 +149,16 @@ public class BaseDialog extends Dialog implements IBaseContacts {
             return this;
         }
 
-        public Builder setClickListener(DialogClickListener listener) {
+        public Builder setClickListener(CommandViewClickListener listener) {
             this.clickListener = listener;
             return this;
         }
 
-        public DialogClickListener getListener() {
+        public CommandViewClickListener getListener() {
             return clickListener;
         }
 
-        public Builder setBottomBtnType(@TypeImpl.status String type) {
+        public Builder setBottomBtnType(@TypeImpl.source String type) {
             this.statusType = type;
             return this;
         }
@@ -182,9 +177,9 @@ public class BaseDialog extends Dialog implements IBaseContacts {
             return this;
         }
 
-        public BaseDialog create() {
-            baseDialog = new BaseDialog(mContext);
-            baseDialog.setContentView(R.layout.dialog_layout);
+        public CommandDialog create() {
+            baseDialog = new CommandDialog(mContext);
+            baseDialog.setContentView(R.layout.dialog_command);
             baseDialog.setCancelable(cancelable);
             baseDialog.setCanceledOnTouchOutside(outsideCancelable);
             baseDialog.setTag(objectTag);
@@ -213,17 +208,18 @@ public class BaseDialog extends Dialog implements IBaseContacts {
         }
 
         public void show() {
-            BaseDialog dialog = create();
-            dialog.show();
+            create();
+            if (null != baseDialog)
+                baseDialog.show();
         }
 
         private void initDialogView() {
-            textTitle = baseDialog.findViewById(R.id.text_title);
-            textContent = baseDialog.findViewById(R.id.text_content);
-            layoutOk = baseDialog.findViewById(R.id.dialog_layout_ok);
-            layoutCancel = baseDialog.findViewById(R.id.dialog_layout_cancel);
-            btnOk = baseDialog.findViewById(R.id.dialog_btn_ok);
-            btnCancel = baseDialog.findViewById(R.id.dialog_btn_cancel);
+            textTitle = baseDialog.findViewById(R.id.text_cmd_title);
+            textContent = baseDialog.findViewById(R.id.text_cmd_content);
+            layoutOk = baseDialog.findViewById(R.id.layout_cmd_next);
+            layoutCancel = baseDialog.findViewById(R.id.layout_cmd_cancel);
+            btnOk = baseDialog.findViewById(R.id.btn_cmd_next);
+            btnCancel = baseDialog.findViewById(R.id.btn_cmd_cancel);
             textTitle.setText(replaceNull(sequenceTitle));
             textContent.setText(replaceNull(sequenceContent));
             btnOk.setText(sequenceOk);
@@ -235,9 +231,14 @@ public class BaseDialog extends Dialog implements IBaseContacts {
         private String replaceNull(CharSequence sequence) {
             return BaseStr.replaceNull(sequence);
         }
-    }
 
-    public interface DialogClickListener {
-        void onClick(BaseDialog dialog, View view, Object tag);
+        public boolean isShowing() {
+            return baseDialog != null && baseDialog.isShowing();
+        }
+
+        public void dismiss() {
+            if (null != baseDialog)
+                baseDialog.dismiss();
+        }
     }
 }

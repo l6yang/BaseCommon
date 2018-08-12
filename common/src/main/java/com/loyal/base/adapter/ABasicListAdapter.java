@@ -33,10 +33,12 @@ public abstract class ABasicListAdapter<T, V extends ABasicListAdapter.ViewHolde
     }
 
     /**
-     * @param isFile true：json格式的文件名
-     *               false：标准的json格式字符串
-     * @param json   isFile=true 如："test.json";
-     *               isFile=false 如：{"name":"张三"};
+     * @param context Context
+     * @param isFile  true：json格式的文件名
+     *                false：标准的json格式字符串
+     * @param t       class
+     * @param json    isFile=true 如："test.json";
+     *                isFile=false 如：{"name":"张三"};
      */
     public ABasicListAdapter(Context context, String json, Class<T> t, boolean isFile) {
         inflater = LayoutInflater.from(context);

@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.loyal.base.impl.CommandViewClickListener;
 import com.loyal.base.impl.IBaseContacts;
-import com.loyal.base.widget.BaseDialog;
+import com.loyal.base.widget.CommandDialog;
 
 public class ToastUtil implements IBaseContacts {
     private static Toast toast = null;
@@ -26,20 +27,20 @@ public class ToastUtil implements IBaseContacts {
     }
 
     public static void showToast(@NonNull Context context, @StringRes int resId) {
-       showToast(context,context.getString(resId));
+        showToast(context, context.getString(resId));
     }
 
-    public static void showDialog(final Context context, final CharSequence content, final boolean isFinish) {
-        BaseDialog.Builder builder = new BaseDialog.Builder(context);
+    public static void showDialog(final Activity context, final CharSequence content, final boolean isFinish) {
+        CommandDialog.Builder builder = new CommandDialog.Builder(context);
         builder.setContent(content).setOutsideCancel(false).setOutsideCancel(false);
-        builder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new BaseDialog.DialogClickListener() {
+        builder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new CommandViewClickListener() {
             @Override
-            public void onClick(BaseDialog dialog, View view, Object tag) {
+            public void onViewClick(CommandDialog dialog, View view, Object tag) {
                 if (dialog != null && dialog.isShowing())
                     dialog.dismiss();
                 if (isFinish) {
-                    if (context instanceof Activity)
-                        ((Activity) context).finish();
+                    if (context != null)
+                        context.finish();
                 }
             }
         });

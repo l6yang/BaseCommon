@@ -16,15 +16,16 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.loyal.base.impl.CommandViewClickListener;
 import com.loyal.base.impl.IFrag2ActListener;
 import com.loyal.base.impl.IUiCommandImpl;
 import com.loyal.base.impl.IntentFrame;
 import com.loyal.base.ui.activity.ABasicFragActivity;
 import com.loyal.base.util.ConnectUtil;
-import com.loyal.base.util.IntentUtil;
+import com.loyal.base.util.IntentBuilder;
 import com.loyal.base.util.ObjectUtil;
 import com.loyal.base.util.TimeUtil;
-import com.loyal.base.util.ToastUtil;
+import com.loyal.base.widget.CommandDialog;
 
 /**
  * {@link ABasicFragActivity#onFrag2Act(String, Object...)}
@@ -42,8 +43,9 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     public abstract void unbind();
 
-    protected IntentUtil intentBuilder;
+    protected IntentBuilder intentBuilder;
     private Toast toast;
+    private CommandDialog.Builder dialogBuilder;
 
     @Override
     public void onAttach(Context context) {
@@ -61,8 +63,8 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(fragLayoutRes(), container, false);
         bindViews(view);
-        afterOnCreate();
         hasIntentParams(false);
+        afterOnCreate();
         return view;
     }
 
@@ -75,8 +77,8 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     public void hasIntentParams(boolean hasParam) {
         intentBuilder = null;
         if (hasParam)
-            intentBuilder = new IntentUtil(this, getIntent());
-        else intentBuilder = new IntentUtil(this);
+            intentBuilder = new IntentBuilder(this, getIntent());
+        else intentBuilder = new IntentBuilder(this);
     }
 
     @Override
@@ -123,9 +125,9 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public void showDialog(@NonNull CharSequence sequence, boolean finish) {
-        Context context = getActivity();
+        Context context = getContext();
         if (null != context)
-            ToastUtil.showDialog(context, replaceNull(sequence), finish);
+            showCompatDialog(replaceNull(sequence), finish);
     }
 
     @Override
@@ -198,11 +200,45 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         toast.show();
     }
 
+    private void initCompatDialog() {
+        Context context = getContext();
+        if (null == context)
+            return;
+        dialogBuilder = new CommandDialog.Builder(context);
+        dialogBuilder.setOutsideCancel(false);
+    }
+
+    private void showCompatDialog(CharSequence content, final boolean isFinish) {
+        if (null != dialogBuilder && dialogBuilder.isShowing())
+            dialogBuilder.dismiss();
+        initCompatDialog();
+        dialogBuilder.setOutsideCancel(!isFinish);
+        dialogBuilder.setContent(content);
+        dialogBuilder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确 定"});
+        dialogBuilder.setClickListener(new CommandViewClickListener() {
+            @Override
+            public void onViewClick(CommandDialog dialog, View view, Object tag) {
+                if (dialog != null && dialog.isShowing())
+                    dialog.dismiss();
+                if (isFinish) {
+                    finish();
+                }
+            }
+        });
+        dialogBuilder.show();
+    }
+
+    public void dismissCompatDialog() {
+        if (null != dialogBuilder && dialogBuilder.isShowing())
+            dialogBuilder.dismiss();
+    }
+
     @Override
     public void onPause() {
-        super.onPause();
+        dismissCompatDialog();
         if (null != toast)
             toast.cancel();
+        super.onPause();
     }
 
     @Override

@@ -11,32 +11,32 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-//  @ 文件系统工具类
 public class FileUtil {
+    public static final String apkName = "sample.apk";
 
     // sd卡路径
     private static final String SD_PATH = Environment.getExternalStorageDirectory().getPath();
-    private static final String MAIN_PATH = SD_PATH + "/com.loyal.base/";
+    private static final String MAIN_PATH = SD_PATH + "/Android/data/com.loyal.base/";
     // 图片文件夹
     public static final String imagePath = MAIN_PATH + "image/";
+    public static final String apkPath = MAIN_PATH + "apk/";
 
-    private static String[] paths = new String[]{imagePath};
+    private static String[] paths = new String[]{imagePath, apkPath};
 
-    private static void createMainDir() {
+    public static void createFileSys() {
         for (String path : paths) {
             File file = new File(path);
             createDirs(file);
         }
     }
 
-    // 创建文件夹是否成功
-    public static void createFileSys() {
+    public static void createFile(String path, String fileName, String content) {
         try {
-            deleteEmptyDir(new File(imagePath));
-            createMainDir();
-            for (String path : paths) {
-                createDirs(path);
-            }
+            File file = new File(path, fileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(content.getBytes());
+            fos.flush();
+            fos.close();
         } catch (Exception e) {
             //
         }
@@ -45,31 +45,6 @@ public class FileUtil {
     public static void deleteEmptyDirs() {
         File file = new File(MAIN_PATH);
         deleteEmptyDir(file);
-        deleteFileWithDir(new File(MAIN_PATH + "Camera_Image"));
-        deleteFileWithDir(new File(MAIN_PATH + "config"));
-        deleteFileWithDir(new File(MAIN_PATH + "IpConfig"));
-        deleteFileWithDir(new File(MAIN_PATH + "Camera_Image"));
-        deleteFileWithDir(new File(MAIN_PATH + "Camera_Image/Thumbnail/"));
-    }
-
-    // 保存IP文件到本地 这里只需要把文件名传进去就行，不管保存的类型
-    public static void createFiles(String path, String fileName, String content) {
-        try {
-            String[] Files = new String[]{fileName};
-            for (String f : Files) {
-                FileOutputStream fos;
-                try {
-                    fos = new FileOutputStream(new File(path) + "/" + f);
-                    fos.write(content.getBytes());
-                    fos.flush();
-                    fos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            //
-        }
     }
 
     // 将保存在文件的数据读载到所需要的控件中
@@ -104,14 +79,6 @@ public class FileUtil {
             return name + extension;
         } catch (Exception e) {
             return "";
-        }
-    }
-
-    public static boolean createDirs(String path) {
-        try {
-            return createDirs(new File(path));
-        } catch (Exception e) {
-            return false;
         }
     }
 
@@ -184,7 +151,7 @@ public class FileUtil {
             fos.close();
             in.close();
         } catch (IOException e) {
-            //
+            e.printStackTrace();
         } finally {
             IOUtil.closeStream(fos);
             IOUtil.closeStream(in);

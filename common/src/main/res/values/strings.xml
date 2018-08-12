@@ -2,4 +2,6 @@
     <string name="app_name">common</string>
     <string name="refuse">拒绝</string>
     <string name="agree">同意</string>
+    <string name="notify_text">有新版本，点击下载更新</string>
+
 </resources>

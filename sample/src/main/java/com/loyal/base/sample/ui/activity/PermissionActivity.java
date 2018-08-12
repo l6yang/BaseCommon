@@ -21,11 +21,6 @@ public class PermissionActivity extends ABasicPerMissionActivity implements OnMu
     }
 
     @Override
-    public boolean isTransStatus() {
-        return false;
-    }
-
-    @Override
     public void bindViews() {
         ButterKnife.bind(this);
     }

@@ -1,6 +1,9 @@
 package com.loyal.base.ui.activity;
 
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -8,17 +11,22 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.barlibrary.OSUtils;
+import com.loyal.base.impl.CommandViewClickListener;
 import com.loyal.base.impl.IUiCommandImpl;
 import com.loyal.base.impl.IntentFrame;
+import com.loyal.base.impl.StatusImpl;
 import com.loyal.base.util.ConnectUtil;
-import com.loyal.base.util.IntentUtil;
+import com.loyal.base.util.IntentBuilder;
 import com.loyal.base.util.ObjectUtil;
 import com.loyal.base.util.StateBarUtil;
 import com.loyal.base.util.TimeUtil;
-import com.loyal.base.util.ToastUtil;
+import com.loyal.base.widget.CommandDialog;
 
 /**
  * this Activity just use to MvvM（DataBindingUtil.setContentView(Activity activity, int layoutId)）
@@ -29,36 +37,76 @@ import com.loyal.base.util.ToastUtil;
  * </p>
  * @since 2018年3月1日11:44:19
  */
-public abstract class ABasicBindActivity extends AppCompatActivity implements IntentFrame.ActFrame, IUiCommandImpl {
+public abstract class ABasicBindActivity extends AppCompatActivity implements IntentFrame.ActFrame, IUiCommandImpl, StatusImpl {
     protected abstract
     @LayoutRes
     int actLayoutRes();
 
     public abstract void afterOnCreate();
 
-    public abstract boolean isTransStatus();
-
     public abstract void setViewByLayoutRes();
+
     public abstract void bindViews();
 
-    protected IntentUtil intentBuilder;
+    protected IntentBuilder intentBuilder;
     private Toast toast;
+    protected ImmersionBar mImmersionBar;
+    private static final String NAVIGATIONBAR_IS_MIN = "navigationbar_is_min";
+    private CommandDialog.Builder dialogBuilder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViewByLayoutRes();
         bindViews();
-        StateBarUtil.setTranslucentStatus(this, isTransStatus());//沉浸式状态栏
+        initImmersiveBar();
+        statusBar(StatusBarImpl.ImmerBar);
         hasIntentParams(false);
         afterOnCreate();
+    }
+
+    @Override
+    public boolean isFullScreen() {
+        return false;
+    }
+
+    @Override
+    public boolean isImmersiveBar() {
+        return true;
+    }
+
+    public void initImmersiveBar() {
+        if (isImmersiveBar()) {
+            mImmersionBar = ImmersionBar.with(this);
+            mImmersionBar.init();
+        }
+    }
+
+    public void statusBar(@StatusBarImpl.source int barStatus) {
+        switch (barStatus) {
+            case StatusBarImpl.StateBar:
+                StateBarUtil.setTranslucentStatus(this, isFullScreen());//沉浸式状态栏
+                break;
+            case StatusBarImpl.ImmerBar:
+                if (OSUtils.isEMUI3_1()) {
+                    //第一种
+                    getContentResolver().registerContentObserver(Settings.System.getUriFor(NAVIGATIONBAR_IS_MIN), true, mNavigationStatusObserver);
+                    //第二种,禁止对导航栏的设置
+                    //mImmersionBar.navigationBarEnable(false).init();
+                }
+                break;
+            case StatusBarImpl.NONE:
+            default:
+                break;
+
+        }
     }
 
     public void hasIntentParams(boolean hasParam) {
         intentBuilder = null;
         if (hasParam)
-            intentBuilder = new IntentUtil(this, getIntent());
-        else intentBuilder = new IntentUtil(this);
+            intentBuilder = new IntentBuilder(this, getIntent());
+        else intentBuilder = new IntentBuilder(this);
     }
 
     @Override
@@ -104,7 +152,7 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
 
     @Override
     public void showDialog(@NonNull CharSequence sequence, boolean finish) {
-        ToastUtil.showDialog(this, replaceNull(sequence), finish);
+        showCompatDialog(sequence, finish);
     }
 
     @Override
@@ -163,10 +211,65 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
         toast.show();
     }
 
+    private void initCompatDialog() {
+        dialogBuilder = new CommandDialog.Builder(this);
+        dialogBuilder.setOutsideCancel(false);
+    }
+
+    private void showCompatDialog(CharSequence content, final boolean isFinish) {
+        if (null != dialogBuilder && dialogBuilder.isShowing())
+            dialogBuilder.dismiss();
+        initCompatDialog();
+        dialogBuilder.setOutsideCancel(!isFinish);
+        dialogBuilder.setContent(content);
+        dialogBuilder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确 定"});
+        dialogBuilder.setClickListener(new CommandViewClickListener() {
+            @Override
+            public void onViewClick(CommandDialog dialog, View view, Object tag) {
+                if (dialog != null && dialog.isShowing())
+                    dialog.dismiss();
+                if (isFinish) {
+                    finish();
+                }
+            }
+        });
+        dialogBuilder.show();
+    }
+
+    public void dismissCompatDialog() {
+        if (null != dialogBuilder && dialogBuilder.isShowing())
+            dialogBuilder.dismiss();
+    }
+
+    @Override
+    public void finish() {
+        dismissCompatDialog();
+        super.finish();
+    }
+
+    private ContentObserver mNavigationStatusObserver = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            int navigationBarIsMin = Settings.System.getInt(getContentResolver(),
+                    NAVIGATIONBAR_IS_MIN, 0);
+            if (navigationBarIsMin == 1) {
+                //导航键隐藏了
+                mImmersionBar.transparentNavigationBar().init();
+            } else {
+                //导航键显示了
+                mImmersionBar.navigationBarColor(android.R.color.black) //隐藏前导航栏的颜色
+                        .fullScreen(false)
+                        .init();
+            }
+        }
+    };
+
     @Override
     protected void onPause() {
-        super.onPause();
         if (null != toast)
             toast.cancel();
+        dismissCompatDialog();
+        super.onPause();
+
     }
 }

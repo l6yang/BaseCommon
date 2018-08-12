@@ -62,7 +62,7 @@ public class LoginActivity extends ABaseActivity implements SubscribeListener<St
     @Override
     public void onResult(int what, Object tag, String result) {
         try {
-            System.out.println(result);
+            showDialog("登录结果\n" + result);
         } catch (Exception e) {
             onError(what, tag, e);
         }
@@ -70,7 +70,7 @@ public class LoginActivity extends ABaseActivity implements SubscribeListener<St
 
     @Override
     public void onError(int what, Object tag, Throwable e) {
-        System.out.println(e);
+        showErrorDialog("登录失败", e);
     }
 }
 
