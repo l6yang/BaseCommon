@@ -14,9 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.loyal.base.impl.IFrag2ActListener;
-import com.loyal.base.impl.IUIInterface;
+import com.loyal.base.impl.IUiCommandImpl;
 import com.loyal.base.impl.IntentFrame;
 import com.loyal.base.ui.activity.ABasicFragActivity;
 import com.loyal.base.util.ConnectUtil;
@@ -28,7 +29,7 @@ import com.loyal.base.util.ToastUtil;
 /**
  * {@link ABasicFragActivity#onFrag2Act(String, Object...)}
  */
-public abstract class ABasicFragment extends Fragment implements IntentFrame.FragmentFrame, IUIInterface {
+public abstract class ABasicFragment extends Fragment implements IntentFrame.FragFrame, IUiCommandImpl {
     private IFrag2ActListener mListener;
 
     public abstract
@@ -41,7 +42,8 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     public abstract void unbind();
 
-    protected IntentUtil builder;
+    protected IntentUtil intentBuilder;
+    private Toast toast;
 
     @Override
     public void onAttach(Context context) {
@@ -71,32 +73,32 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     public void hasIntentParams(boolean hasParam) {
-        builder = null;
+        intentBuilder = null;
         if (hasParam)
-            builder = new IntentUtil(this, getIntent());
-        else builder = new IntentUtil(this);
+            intentBuilder = new IntentUtil(this, getIntent());
+        else intentBuilder = new IntentUtil(this);
     }
 
     @Override
     public void startActivityByFrag(@Nullable Class<?> tClass) {
-        builder.startActivityByFrag(tClass);
+        intentBuilder.startActivityByFrag(tClass);
     }
 
     @Override
     public void startActivityForResultByFrag(@Nullable Class<?> tClass, @IntRange(from = 2) int reqCode) {
-        builder.startActivityForResultByFrag(tClass, reqCode);
+        intentBuilder.startActivityForResultByFrag(tClass, reqCode);
     }
 
     @Override
     public void startServiceByFrag(@Nullable Class<?> tClass) {
-        builder.startServiceByFrag(tClass);
+        intentBuilder.startServiceByFrag(tClass);
     }
 
     @Override
     public void showToast(@NonNull CharSequence sequence) {
-        Context context = getActivity();
+        Context context = getContext();
         if (null != context)
-            ToastUtil.showToast(context, sequence);
+            initToast(sequence);
     }
 
     @Override
@@ -111,10 +113,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public void showToast(int resId) {
-        onFrag2Act("showToast", resId);
-        Context context = getActivity();
-        if (null != context)
-            ToastUtil.showToast(context, context.getString(resId));
+        showToast(getString(resId));
     }
 
     @Override
@@ -131,7 +130,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public String replaceNull(CharSequence sequence) {
-        return Str.replaceNull(sequence);
+        return BaseStr.replaceNull(sequence);
     }
 
     @Override
@@ -141,12 +140,12 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public String encodeStr2Utf(@NonNull String string) {
-        return Str.encodeStr2Utf(string);
+        return BaseStr.encodeStr2Utf(string);
     }
 
     @Override
     public String decodeStr2Utf(@NonNull String string) {
-        return Str.decodeStr2Utf(string);
+        return BaseStr.decodeStr2Utf(string);
     }
 
     @Override
@@ -187,6 +186,23 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         FragmentActivity activity = getActivity();
         if (null != activity)
             activity.finish();
+    }
+
+    private void initToast(CharSequence sequence) {
+        if (toast == null)
+            toast = Toast.makeText(getContext(), sequence, Toast.LENGTH_SHORT);
+        else {
+            toast.setText(sequence);
+            toast.setDuration(Toast.LENGTH_SHORT);
+        }
+        toast.show();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (null != toast)
+            toast.cancel();
     }
 
     @Override

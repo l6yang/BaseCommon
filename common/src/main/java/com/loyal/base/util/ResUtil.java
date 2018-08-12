@@ -24,7 +24,7 @@ public class ResUtil {
     }
 
     /**
-     * @param fileName json/index.json
+     * @param fileName "json/index.json"
      */
     public static InputStream openAssetFile(Context context, String fileName) {
         try {

@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.loyal.base.impl.IContacts;
+import com.loyal.base.impl.IBaseContacts;
 import com.loyal.base.util.GsonUtil;
 import com.loyal.base.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ABasicListAdapter<T, V extends ABasicListAdapter.ViewHolder> extends BaseAdapter implements IContacts {
+public abstract class ABasicListAdapter<T, V extends ABasicListAdapter.ViewHolder> extends BaseAdapter implements IBaseContacts {
     private final LayoutInflater inflater;
     private List<T> arrList;
     private Context mContext;
@@ -33,14 +33,14 @@ public abstract class ABasicListAdapter<T, V extends ABasicListAdapter.ViewHolde
     }
 
     /**
-     * @param fromRes 是否Assets目录下的json文件
-     *                true：表示param json是Assets目录下的json文件名 ex："test.json"
-     *                false：表示param json是json字符串 ex：{"name":"张三"}
-     * @param json    json文件或者Assets下的文件名
+     * @param isFile true：json格式的文件名
+     *               false：标准的json格式字符串
+     * @param json   isFile=true 如："test.json";
+     *               isFile=false 如：{"name":"张三"};
      */
-    public ABasicListAdapter(Context context, String json, Class<T> t, boolean fromRes) {
+    public ABasicListAdapter(Context context, String json, Class<T> t, boolean isFile) {
         inflater = LayoutInflater.from(context);
-        this.arrList = GsonUtil.json2BeanList(context, json, t, fromRes);
+        this.arrList = GsonUtil.json2BeanList(context, json, t, isFile);
     }
 
     public void refreshList(List<T> arrList) {
@@ -86,7 +86,7 @@ public abstract class ABasicListAdapter<T, V extends ABasicListAdapter.ViewHolde
     }
 
     protected String replaceNull(CharSequence sequence) {
-        return Str.replaceNull(sequence);
+        return BaseStr.replaceNull(sequence);
     }
 
     protected String subEndTime(String t) {

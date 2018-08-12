@@ -2,12 +2,13 @@ package com.loyal.base.sample.ui.activity;
 
 import android.Manifest;
 
+import com.loyal.base.impl.OnMultiplePermissionsListener;
 import com.loyal.base.sample.R;
 import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import butterknife.ButterKnife;
 
-public class PermissionActivity extends ABasicPerMissionActivity implements ABasicPerMissionActivity.OnMultiplePermissionsListener {
+public class PermissionActivity extends ABasicPerMissionActivity implements OnMultiplePermissionsListener {
 
     @Override
     protected int actLayoutRes() {
@@ -16,7 +17,7 @@ public class PermissionActivity extends ABasicPerMissionActivity implements ABas
 
     @Override
     public void afterOnCreate() {
-        requestMultiplePermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        multiplePermissions(this, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     @Override
@@ -30,8 +31,8 @@ public class PermissionActivity extends ABasicPerMissionActivity implements ABas
     }
 
     @Override
-    public void onMultiplePermissionsResult(String permission, boolean successful, boolean shouldShow) {
-        System.out.println("onAllPermissionsResult#" + permission + "   " + successful + "  " + shouldShow);
+    public void onMultiplePermissions(String permission, boolean successful, boolean shouldShow) {
+        System.out.println("onAllPermissions#" + permission + "   " + successful + "  " + shouldShow);
         switch (permission) {
             case Manifest.permission.CAMERA:
                 if (successful) {

@@ -2,29 +2,29 @@ package com.loyal.base.util;
 
 import android.text.TextUtils;
 
-import com.loyal.base.impl.IContacts;
+import com.loyal.base.impl.IBaseContacts;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class TimeUtil implements IContacts {
+public class TimeUtil implements IBaseContacts {
     public static String getWeek() {
-        SimpleDateFormat format = new SimpleDateFormat(Str.TIME_WEEK, Locale.CHINA);
+        SimpleDateFormat format = new SimpleDateFormat(BaseStr.TIME_WEEK, Locale.CHINA);
         return replaceTime(format.format(new Date()));
     }
 
-    private static SimpleDateFormat setFormat(String format) {
+    public static SimpleDateFormat setFormat(String format) {
         return new SimpleDateFormat(format, Locale.CHINA);
     }
 
     public static String getDate() {
-        return replaceTime(setFormat(Str.TIME_YEAR_MONTH_DAY)
+        return replaceTime(setFormat(BaseStr.TIME_YMD)
                 .format(new Date()));
     }
 
     public static String getDateTime() {
-        return replaceTime(setFormat(Str.TIME_ALL).format(new Date()));
+        return replaceTime(setFormat(BaseStr.TIME_ALL).format(new Date()));
     }
 
     public static String getDateTime(String format) {
@@ -45,7 +45,7 @@ public class TimeUtil implements IContacts {
     }
 
     public static String getTime() {
-        return replaceTime(setFormat(Str.HOURS_MIN).format(new Date()));
+        return replaceTime(setFormat(BaseStr.TIME_HM).format(new Date()));
     }
 
     public static boolean afterDate(String startTime, String endTime, String format) {
@@ -66,7 +66,7 @@ public class TimeUtil implements IContacts {
 
     public static int dateSpan(String startTime, String endTime) {
         try {
-            SimpleDateFormat sdf = setFormat(Str.TIME_YEAR_MONTH_DAY);
+            SimpleDateFormat sdf = setFormat(BaseStr.TIME_YMD);
             if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime))
                 return -1;
             if (TextUtils.equals(startTime, endTime))
@@ -84,7 +84,7 @@ public class TimeUtil implements IContacts {
 
     public static float dateTime(String startTime, String endTime) {
         try {
-            SimpleDateFormat sdf = setFormat(Str.TIME_ALL);
+            SimpleDateFormat sdf = setFormat(BaseStr.TIME_ALL);
             if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime))
                 return -1;
             if (TextUtils.equals(startTime, endTime))
@@ -101,12 +101,38 @@ public class TimeUtil implements IContacts {
         }
     }
 
+    /**
+     * format时间格式转换为long
+     *
+     * @param time 默认格式为yyyy-MM-dd HH:mm:ss
+     */
+    public static long time2LongDate(String time) {
+        return time2LongDate(time, BaseStr.TIME_ALL);
+    }
+
+    /**
+     * @param time   必须和所传的时间格式相匹配
+     * @param format 默认yyyy-MM-dd HH:mm:ss
+     */
+    public static long time2LongDate(String time, String format) {
+        try {
+            if (TextUtils.isEmpty(time))
+                return 0;
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.SIMPLIFIED_CHINESE);
+            Date start = sdf.parse(time);
+            return start.getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     private static String replaceTime(String str) {
         return str.toLowerCase().replace("上午", "").replace("下午", "").replace("am", "").replace("pm", "");
     }
 
     public static String subEndTime(CharSequence timeSequence) {
-        String subTime = Str.replaceNull(timeSequence).trim();
+        String subTime = BaseStr.replaceNull(timeSequence).trim();
         return TextUtils.isEmpty(subTime) ? "" : subTime.
                 replace("00:00:00", "").replace(".0", "").trim();
     }

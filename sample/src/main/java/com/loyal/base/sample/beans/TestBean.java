@@ -1,8 +1,8 @@
 package com.loyal.base.sample.beans;
 
-import com.loyal.base.beans.GsonBean;
+import com.loyal.base.beans.PatternBean;
 
-public class TestBean<T> extends GsonBean {
+public class TestBean<T> extends PatternBean {
     private T code;
     private String message;
 

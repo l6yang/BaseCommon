@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.loyal.base.impl.IntentFrame;
 
-public class IntentUtil extends Intent implements IntentFrame.ActivityFrame, IntentFrame.FragmentFrame {
+public class IntentUtil extends Intent implements IntentFrame.ActFrame, IntentFrame.FragFrame {
     private Activity activity;
     private Fragment fragment;
 

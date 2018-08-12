@@ -3,20 +3,31 @@ package com.loyal.base.impl;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public interface IContacts {
+public interface IBaseContacts {
 
-    class Str {
+    class BaseStr {
         public static final String TIME_ALL = "yyyy-MM-dd HH:mm:ss";
         public static final String TIME_WEEK = "yyyy-MM-dd EEEE";
-        public static final String TIME_YEAR_MONTH_DAY = "yyyy-MM-dd";
-        public static final String HOURS_MIN = "HH:mm";
+        public static final String TIME_YMD = "yyyy-MM-dd";
+        public static final String TIME_HM = "HH:mm";
+        public static final String TIME_HMS = "HH:mm:ss";
+
         public static final String MONTH_DAY_HOUR_MIN = "MM-dd HH:mm";
         public static final String YEAR_MONTH = "yyyy-MM";
+        public static final String ipAdd = "192.168.0.1";
+        public static final String port = "9080";
+        public static final String http = "http://";
+        public static final String https = "https://";
+        public static final String action = "app.do?method=";
+        public static final String nameSpace = "/test/";
 
         public static String replaceNull(CharSequence sequence) {
             return TextUtils.isEmpty(sequence) ? "" : sequence.toString().trim();
@@ -73,7 +84,14 @@ public interface IContacts {
         public static final int contactsPermission = 305;
     }
 
-    enum TYPE {
-        NONE, LEFT, RIGHT
+    final class TypeImpl {
+        public static final String NONE = "none";
+        public static final String LEFT = "left";
+        public static final String RIGHT = "right";
+
+        @StringDef({NONE, LEFT, RIGHT})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface status {
+        }
     }
 }

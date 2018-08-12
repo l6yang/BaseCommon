@@ -4,16 +4,16 @@ import android.Manifest;
 import android.view.View;
 import android.widget.TextView;
 
+import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.sample.FileUtil;
 import com.loyal.base.sample.R;
-import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends ABaseActivity implements ABasicPerMissionActivity.OnItemPermissionListener {
+public class MainActivity extends ABaseActivity implements OnSinglePermissionListener {
     @BindView(R.id.textView)
     TextView textView;
 
@@ -25,11 +25,11 @@ public class MainActivity extends ABaseActivity implements ABasicPerMissionActiv
     @Override
     public void afterOnCreate() {
         textView.setText("Just from MainActivity");
-        requestPermission(PerMission.storagePermission, this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        singlePermission(PerMission.storagePermission, this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override
-    public void onItemPermissionResult(int reqCode, boolean successful) {
+    public void onSinglePermission(int reqCode, boolean successful) {
         if (successful) {
             FileUtil.createFileSys();
         }

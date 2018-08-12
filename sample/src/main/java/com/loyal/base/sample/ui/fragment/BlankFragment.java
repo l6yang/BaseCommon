@@ -6,14 +6,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.sample.R;
 import com.loyal.base.sample.ui.activity.Test2Activity;
-import com.loyal.base.ui.fragment.ABasicPerMissionFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class BlankFragment extends ABaseFragment implements ABasicPerMissionFragment.onItemPermissionListener {
+public class BlankFragment extends ABaseFragment implements OnSinglePermissionListener {
     private static final String ARG_PARAM1 = "param1";
 
     private String mParam1;
@@ -58,11 +58,11 @@ public class BlankFragment extends ABaseFragment implements ABasicPerMissionFrag
             case R.id.message:
                 String tag = (String) v.getTag();
                 if (TextUtils.equals("memory", tag)) {
-                    requestPermission(PerMission.storagePermission, this,  PerMission.WRITE_EXTERNAL_STORAGE);
+                    singlePermission(PerMission.storagePermission, this,  PerMission.WRITE_EXTERNAL_STORAGE);
                 } else if (TextUtils.equals("location", tag)) {
-                    requestPermission(PerMission.locationPermission, this, PerMission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+                    singlePermission(PerMission.locationPermission, this, PerMission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
                 } else if (TextUtils.equals("phone", tag)) {
-                    requestPermission(5, this, Manifest.permission.READ_PHONE_STATE);
+                    singlePermission(5, this, Manifest.permission.READ_PHONE_STATE);
                 } else {
                     //使用这个的话TestFragActivity需要继承与BasicPermissionActivity
                     onFrag2Act("camera");
@@ -75,7 +75,7 @@ public class BlankFragment extends ABaseFragment implements ABasicPerMissionFrag
     }
 
     @Override
-    public void onItemPermissionResult(int reqCode, boolean successful) {
+    public void onSinglePermission(int reqCode, boolean successful) {
         switch (reqCode) {
             case 5:
                 System.out.println(successful ? "存储权限获取成功" : "存储权限获取失败");

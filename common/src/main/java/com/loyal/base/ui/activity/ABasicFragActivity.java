@@ -1,7 +1,6 @@
 package com.loyal.base.ui.activity;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.loyal.base.impl.IFrag2ActListener;
 import com.loyal.base.ui.fragment.ABasicFragment;
@@ -13,13 +12,13 @@ public abstract class ABasicFragActivity extends ABasicActivity implements IFrag
 
     @Override
     public void onFrag2Act(String tag, Object... objectParam) {
-        if (TextUtils.equals("showToast", tag)) {
+       /* if (TextUtils.equals("showToast", tag)) {
             Object object = objectParam[0];
             if (object instanceof CharSequence) {
                 showToast((CharSequence) object);
             } else if (object instanceof Integer) {
                 showToast((Integer) object);
             }
-        }
+        }*/
     }
 }

@@ -12,12 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.loyal.base.R;
-import com.loyal.base.impl.IContacts;
+import com.loyal.base.impl.IBaseContacts;
 
-public class BaseDialog extends Dialog implements IContacts {
+public class BaseDialog extends Dialog implements IBaseContacts {
 
     private BaseDialog(@NonNull Context context) {
-        this(context, R.style.DialogTheme);
+        this(context, R.style.dialogTheme);
     }
 
     private BaseDialog(@NonNull Context context, @StyleRes int themeResId) {
@@ -50,7 +50,7 @@ public class BaseDialog extends Dialog implements IContacts {
         private CharSequence sequenceTitle = "温馨提示", sequenceContent, sequenceOk, sequenceCancel;
         private DialogClickListener clickListener;
         private BaseDialog baseDialog;
-        private TYPE type = TYPE.NONE;
+        private String statusType = TypeImpl.NONE;
         private TextView textTitle, textContent;
         private View layoutOk, layoutCancel;
         private Button btnOk, btnCancel;
@@ -119,14 +119,14 @@ public class BaseDialog extends Dialog implements IContacts {
         }
 
         public Builder setBtnText(@Size(min = 1, max = 2) @NonNull String[] sequence) {
-            switch (type) {
-                case LEFT:
+            switch (statusType) {
+                case TypeImpl.LEFT:
                     setLeftBtnText(sequence[0]);
                     break;
-                case RIGHT:
+                case TypeImpl.RIGHT:
                     setRightBtnText(sequence[0]);
                     break;
-                case NONE:
+                case TypeImpl.NONE:
                     setLeftBtnText(sequence[0]);
                     setRightBtnText(sequence.length >= 2 ? sequence[1] : "");
                     break;
@@ -163,13 +163,13 @@ public class BaseDialog extends Dialog implements IContacts {
             return clickListener;
         }
 
-        public Builder setBottomBtnType(TYPE type) {
-            this.type = type;
+        public Builder setBottomBtnType(@TypeImpl.status String type) {
+            this.statusType = type;
             return this;
         }
 
-        public TYPE getType() {
-            return type;
+        public String getType() {
+            return statusType;
         }
 
         public Builder setCancelable(boolean cancelable) {
@@ -189,20 +189,20 @@ public class BaseDialog extends Dialog implements IContacts {
             baseDialog.setCanceledOnTouchOutside(outsideCancelable);
             baseDialog.setTag(objectTag);
             initDialogView();
-            switch (type) {
-                case NONE:
+            switch (statusType) {
+                case TypeImpl.NONE:
                     if (null != layoutOk)
                         layoutOk.setVisibility(View.VISIBLE);
                     if (null != layoutCancel)
                         layoutCancel.setVisibility(View.VISIBLE);
                     break;
-                case LEFT:
+                case TypeImpl.LEFT:
                     if (null != layoutOk)
                         layoutOk.setVisibility(View.GONE);
                     if (null != layoutCancel)
                         layoutCancel.setVisibility(View.VISIBLE);
                     break;
-                case RIGHT:
+                case TypeImpl.RIGHT:
                     if (null != layoutOk)
                         layoutOk.setVisibility(View.VISIBLE);
                     if (null != layoutCancel)
@@ -233,7 +233,7 @@ public class BaseDialog extends Dialog implements IContacts {
         }
 
         private String replaceNull(CharSequence sequence) {
-            return Str.replaceNull(sequence);
+            return BaseStr.replaceNull(sequence);
         }
     }
 

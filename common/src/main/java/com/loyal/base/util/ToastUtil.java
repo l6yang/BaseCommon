@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.loyal.base.impl.IContacts;
+import com.loyal.base.impl.IBaseContacts;
 import com.loyal.base.widget.BaseDialog;
 
-public class ToastUtil implements IContacts {
+public class ToastUtil implements IBaseContacts {
     private static Toast toast = null;
 
     public static void showToast(@NonNull Context context, @NonNull CharSequence sequence) {
@@ -32,7 +32,7 @@ public class ToastUtil implements IContacts {
     public static void showDialog(final Context context, final CharSequence content, final boolean isFinish) {
         BaseDialog.Builder builder = new BaseDialog.Builder(context);
         builder.setContent(content).setOutsideCancel(false).setOutsideCancel(false);
-        builder.setBottomBtnType(isFinish ? TYPE.RIGHT : TYPE.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new BaseDialog.DialogClickListener() {
+        builder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new BaseDialog.DialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog, View view, Object tag) {
                 if (dialog != null && dialog.isShowing())

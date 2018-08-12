@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.loyal.base.impl.IUIInterface;
+import com.loyal.base.impl.IUiCommandImpl;
 import com.loyal.base.impl.IntentFrame;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.IntentUtil;
@@ -29,7 +29,7 @@ import com.loyal.base.util.ToastUtil;
  * </p>
  * @since 2018年3月1日11:44:19
  */
-public abstract class ABasicBindActivity extends AppCompatActivity implements IntentFrame.ActivityFrame, IUIInterface {
+public abstract class ABasicBindActivity extends AppCompatActivity implements IntentFrame.ActFrame, IUiCommandImpl {
     protected abstract
     @LayoutRes
     int actLayoutRes();
@@ -38,16 +38,16 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
 
     public abstract boolean isTransStatus();
 
-    public abstract void setContentView();
+    public abstract void setViewByLayoutRes();
     public abstract void bindViews();
 
-    protected IntentUtil builder;
+    protected IntentUtil intentBuilder;
     private Toast toast;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView();
+        setViewByLayoutRes();
         bindViews();
         StateBarUtil.setTranslucentStatus(this, isTransStatus());//沉浸式状态栏
         hasIntentParams(false);
@@ -55,25 +55,25 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     }
 
     public void hasIntentParams(boolean hasParam) {
-        builder = null;
+        intentBuilder = null;
         if (hasParam)
-            builder = new IntentUtil(this, getIntent());
-        else builder = new IntentUtil(this);
+            intentBuilder = new IntentUtil(this, getIntent());
+        else intentBuilder = new IntentUtil(this);
     }
 
     @Override
     public void startActivityByAct(@Nullable Class<?> tClass) {
-        builder.startActivityByAct(tClass);
+        intentBuilder.startActivityByAct(tClass);
     }
 
     @Override
     public void startActivityForResultByAct(@Nullable Class<?> tClass, @IntRange(from = 2) int reqCode) {
-        builder.startActivityForResultByAct(tClass, reqCode);
+        intentBuilder.startActivityForResultByAct(tClass, reqCode);
     }
 
     @Override
     public void startServiceByAct(@Nullable Class<?> tClass) {
-        builder.startServiceByAct(tClass);
+        intentBuilder.startServiceByAct(tClass);
     }
 
     @Override
@@ -109,7 +109,7 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
 
     @Override
     public String replaceNull(CharSequence sequence) {
-        return Str.replaceNull(sequence);
+        return BaseStr.replaceNull(sequence);
     }
 
     @Override
@@ -119,12 +119,12 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
 
     @Override
     public String encodeStr2Utf(@NonNull String string) {
-        return Str.encodeStr2Utf(string);
+        return BaseStr.encodeStr2Utf(string);
     }
 
     @Override
     public String decodeStr2Utf(@NonNull String string) {
-        return Str.decodeStr2Utf(string);
+        return BaseStr.decodeStr2Utf(string);
     }
 
     @Override

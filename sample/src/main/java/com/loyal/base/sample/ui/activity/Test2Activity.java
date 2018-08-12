@@ -8,17 +8,17 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.sample.R;
 import com.loyal.base.sample.ViewAdapter;
 import com.loyal.base.sample.ui.fragment.BlankFragment;
-import com.loyal.base.ui.activity.ABasicPerMissionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-public class Test2Activity extends ABaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, ABasicPerMissionActivity.OnItemPermissionListener {
+public class Test2Activity extends ABaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, OnSinglePermissionListener {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.navigation)
@@ -83,12 +83,12 @@ public class Test2Activity extends ABaseActivity implements BottomNavigationView
     public void onFrag2Act(String tag, Object... objectParam) {
         super.onFrag2Act(tag, objectParam);
         if (TextUtils.equals("camera", tag)) {
-            requestPermission(9, this, Manifest.permission.CAMERA);
+            singlePermission(9, this, Manifest.permission.CAMERA);
         }
     }
 
     @Override
-    public void onItemPermissionResult(int reqCode, boolean successful) {
+    public void onSinglePermission(int reqCode, boolean successful) {
         System.out.println(successful ? "请求相机权限成功" : "请求相机权限失败");
     }
 }

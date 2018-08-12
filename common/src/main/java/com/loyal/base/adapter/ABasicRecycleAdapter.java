@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.loyal.base.impl.IContacts;
+import com.loyal.base.impl.IBaseContacts;
 import com.loyal.base.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ABasicRecycleAdapter<VH extends ABasicViewHolder, T> extends RecyclerView.Adapter<VH> implements IContacts {
+public abstract class ABasicRecycleAdapter<VH extends ABasicViewHolder, T> extends RecyclerView.Adapter<VH> implements IBaseContacts {
     private int mCount = 0;
     private LayoutInflater mInflater;
     protected ABasicViewHolder.OnItemClickListener mOnItemClickListener;
@@ -100,7 +100,7 @@ public abstract class ABasicRecycleAdapter<VH extends ABasicViewHolder, T> exten
     }
 
     public String replaceNull(CharSequence sequence) {
-        return Str.replaceNull(sequence);
+        return BaseStr.replaceNull(sequence);
     }
 
     public String subEndTime(CharSequence sequence) {
