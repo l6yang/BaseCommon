@@ -2,19 +2,17 @@ package com.loyal.base.rxjava;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.loyal.base.rxjava.impl.ProgressCancelListener;
-import com.loyal.base.rxjava.impl.ServerBaseUrlImpl;
-import com.loyal.base.rxjava.impl.SubscribeCancelListener;
+import com.loyal.base.rxjava.impl.UnSubscribeListener;
 import com.loyal.base.rxjava.impl.SubscribeListener;
-import com.loyal.base.util.ConnectUtil;
 
 import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
-public abstract class BaseRxProgressSubscriber<T> implements Observer<T>, ProgressCancelListener, SubscribeCancelListener, ServerBaseUrlImpl {
+public class BaseRxTaskSubscriber<T> implements Observer<T>, ProgressCancelListener, UnSubscribeListener {
     private SubscribeListener<T> subscribeListener;
     private int mWhat;
     private boolean showProgressDialog;//default=false
@@ -22,57 +20,54 @@ public abstract class BaseRxProgressSubscriber<T> implements Observer<T>, Progre
     private RxHandler.Builder builder;
     private Disposable disposable;
 
-    public abstract void createServer(RetrofitManage retrofitManage);
-
-    @Override
-    public String httpOrHttps() {
-        return "http";//default
+    public BaseRxTaskSubscriber(Context context) {
+        this(context, true);
     }
 
-    @Override
-    public String baseUrl(String clientIp) {
-        return ConnectUtil.getBaseUrl(httpOrHttps(), clientIp, serverNameSpace());
+    public BaseRxTaskSubscriber(Context context, boolean showDialog) {
+        this(context, 2, showDialog);
     }
 
-    public BaseRxProgressSubscriber(Context context, String ipAdd) {
-        this(context, ipAdd, 1, false);
-    }
-
-    public BaseRxProgressSubscriber(Context context, String ipAdd, @IntRange(from = 1) int what, boolean showDialog) {
+    public BaseRxTaskSubscriber(Context context, @IntRange(from = 2) int what, boolean showDialog) {
         initDialog(context);
-        createServer(RetrofitManage.getInstance(baseUrl(ipAdd)));
         setWhat(what).showProgressDialog(showDialog);
     }
 
     private void initDialog(Context context) {
         builder = new RxHandler.Builder(context, this);
-        setMessage("").setCancelable(true);
+        setMessage("").setCancelable(true).setCanceledOnTouchOutside(true);
     }
 
-    public BaseRxProgressSubscriber<T> setWhat(@IntRange(from = 1) int what) {
+    public BaseRxTaskSubscriber<T> setWhat(@IntRange(from = 2) int what) {
         this.mWhat = what;
         return this;
     }
 
-    public BaseRxProgressSubscriber<T> setMessage(CharSequence sequence) {
+    public BaseRxTaskSubscriber<T> setMessage(CharSequence sequence) {
         if (builder != null) {
             builder.setMessage(sequence);
         }
         return this;
     }
 
-    public BaseRxProgressSubscriber<T> showProgressDialog(boolean showProgressDialog) {
+    public BaseRxTaskSubscriber<T> showProgressDialog(boolean showProgressDialog) {
         this.showProgressDialog = showProgressDialog;
         return this;
     }
 
-    public BaseRxProgressSubscriber<T> setCancelable(boolean flag) {
+    public BaseRxTaskSubscriber<T> setCancelable(boolean flag) {
         if (builder != null)
             builder.setCancelable(flag);
         return this;
     }
 
-    public BaseRxProgressSubscriber<T> setTag(Object object) {
+    public BaseRxTaskSubscriber<T> setCanceledOnTouchOutside(boolean flag) {
+        if (builder != null)
+            builder.setCanceledOnTouchOutside(flag);
+        return this;
+    }
+
+    public BaseRxTaskSubscriber<T> setTag(Object object) {
         this.object = object;
         return this;
     }
@@ -123,8 +118,8 @@ public abstract class BaseRxProgressSubscriber<T> implements Observer<T>, Progre
 
     @Override
     public void onComplete() {
-        dispose();
         dismissDialog();
+        dispose();
     }
 
     @Override
@@ -135,7 +130,7 @@ public abstract class BaseRxProgressSubscriber<T> implements Observer<T>, Progre
 
     /*不显示dialog，取消执行*/
     @Override
-    public void onSubscribeCancel() {
+    public void onUnsubscribe() {
         onComplete();
     }
 
@@ -144,3 +139,4 @@ public abstract class BaseRxProgressSubscriber<T> implements Observer<T>, Progre
             disposable.dispose();
     }
 }
+

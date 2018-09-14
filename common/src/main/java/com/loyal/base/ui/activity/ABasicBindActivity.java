@@ -98,7 +98,6 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
             case StatusBarImpl.NONE:
             default:
                 break;
-
         }
     }
 
@@ -222,7 +221,7 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确 定"});
+        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText("确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
             public void onViewClick(CommandDialog dialog, View view, Object tag) {
@@ -254,12 +253,14 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
                     NAVIGATIONBAR_IS_MIN, 0);
             if (navigationBarIsMin == 1) {
                 //导航键隐藏了
-                mImmersionBar.transparentNavigationBar().init();
+                if (null != mImmersionBar)
+                    mImmersionBar.transparentNavigationBar().init();
             } else {
                 //导航键显示了
-                mImmersionBar.navigationBarColor(android.R.color.black) //隐藏前导航栏的颜色
-                        .fullScreen(false)
-                        .init();
+                if (null != mImmersionBar)
+                    mImmersionBar.navigationBarColor(android.R.color.black) //隐藏前导航栏的颜色
+                            .fullScreen(false)
+                            .init();
             }
         }
     };
@@ -270,6 +271,5 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
             toast.cancel();
         dismissCompatDialog();
         super.onPause();
-
     }
 }

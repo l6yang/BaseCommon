@@ -7,8 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.loyal.base.adapter.BasePagerAdapter;
 import com.loyal.base.sample.R;
-import com.loyal.base.sample.ViewAdapter;
 import com.loyal.base.sample.ui.fragment.BlankFragment;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class TestActivity extends ABaseFragActivity implements BottomNavigationV
         fragments.add(BlankFragment.newInstance("memory"));
         fragments.add(BlankFragment.newInstance("location"));
         fragments.add(BlankFragment.newInstance("phone"));
-        viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager(), fragments));
+        viewPager.setAdapter(new BasePagerAdapter(getSupportFragmentManager(), fragments));
         navigation.setOnNavigationItemSelectedListener(this);
         viewPager.addOnPageChangeListener(this);
     }

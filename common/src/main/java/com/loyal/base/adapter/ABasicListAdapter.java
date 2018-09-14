@@ -45,13 +45,13 @@ public abstract class ABasicListAdapter<T, V extends ABasicListAdapter.ViewHolde
         this.arrList = GsonUtil.json2BeanList(context, json, t, isFile);
     }
 
-    public void refreshList(List<T> arrList) {
+    public void notifyList(List<T> arrList) {
         changedList(arrList);
         notifyDataSetChanged();
     }
 
-    public void refreshList() {
-        refreshList(null);
+    public void notifyList() {
+        notifyList(null);
     }
 
     public void changedList(List<T> arrList) {

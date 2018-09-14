@@ -11,7 +11,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public abstract class ABasicPerMissionActivity extends ABasicFragActivity {
+public abstract class ABasicPerMissionActivity extends ABasicActivity {
     private RxPermissions rxPermissions;
     private Disposable disposable;
 

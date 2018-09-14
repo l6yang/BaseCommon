@@ -7,10 +7,4 @@ public abstract class ABasicActivity extends ABasicBindActivity {
         setContentView(actLayoutRes());
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mImmersionBar != null)
-            mImmersionBar.destroy();
-    }
 }

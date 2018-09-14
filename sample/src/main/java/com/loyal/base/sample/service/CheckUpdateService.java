@@ -11,7 +11,7 @@ import com.loyal.base.sample.beans.ResultBean;
 import com.loyal.base.sample.beans.UpdateBean;
 import com.loyal.base.sample.notify.NotifyNotification;
 import com.loyal.base.sample.notify.UpdateNotification;
-import com.loyal.base.sample.rxjava.RxProgressSubscriber;
+import com.loyal.base.sample.rxjava.RxServerUnSubscribe;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.DeviceUtil;
 import com.loyal.base.util.GsonUtil;
@@ -46,7 +46,7 @@ public class CheckUpdateService extends IntentService implements SubscribeListen
 
     private void handleAction(Intent intent) {
         String ipAdd = intent.getStringExtra(EXTRA_PARAM1);
-        RxProgressSubscriber<String> subscriber = new RxProgressSubscriber<>(this, ipAdd);
+        RxServerUnSubscribe<String> subscriber = new RxServerUnSubscribe<>(this, ipAdd);
         subscriber.showProgressDialog(false);
         subscriber.setTag(intent).setSubscribeListener(this);
         String sbsn = DeviceUtil.deviceSerial();

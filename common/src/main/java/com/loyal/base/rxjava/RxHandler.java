@@ -22,7 +22,6 @@ public class RxHandler extends Handler implements DialogInterface.OnCancelListen
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(context);
             progressDialog.setOnCancelListener(this);
-            progressDialog.setCanceledOnTouchOutside(false);
         }
     }
 
@@ -31,9 +30,14 @@ public class RxHandler extends Handler implements DialogInterface.OnCancelListen
             progressDialog.setMessage(message);
     }
 
-    private void setCancelable(boolean flag) {
+    private void setCancelable(boolean cancelable) {
         if (progressDialog != null)
-            progressDialog.setCancelable(flag);
+            progressDialog.setCancelable(cancelable);
+    }
+
+    private void setCanceledOnTouchOutside(boolean flag) {
+        if (progressDialog != null)
+            progressDialog.setCanceledOnTouchOutside(flag);
     }
 
     private void dismissDialog() {
@@ -77,9 +81,12 @@ public class RxHandler extends Handler implements DialogInterface.OnCancelListen
             return this;
         }
 
-        public Builder setCancelable(boolean cancelable) {
+        public void setCancelable(boolean cancelable) {
             handler.setCancelable(cancelable);
-            return this;
+        }
+
+        public void setCanceledOnTouchOutside(boolean flag) {
+            handler.setCanceledOnTouchOutside(flag);
         }
 
         public void show() {

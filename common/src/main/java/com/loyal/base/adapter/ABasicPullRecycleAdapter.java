@@ -2,7 +2,6 @@ package com.loyal.base.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,18 +14,24 @@ import com.loyal.base.util.TimeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ABasicRecycleAdapter<T, VH extends ABasicViewHolder> extends RecyclerView.Adapter<VH> implements IBaseContacts {
+/**
+ * 适用于分页加载
+ * 继承此Adapter，需要设置{@link ABasicPullRecycleAdapter#setCount(int)}
+ * 在Adapter里面设置或在外面设置都一样
+ */
+public abstract class ABasicPullRecycleAdapter<T, VH extends ABasicViewHolder> extends RecyclerView.Adapter<VH> implements IBaseContacts {
+    private int mCount = 0;
     private LayoutInflater mInflater;
     protected ABasicViewHolder.OnItemClickListener mOnItemClickListener;
     protected ABasicViewHolder.OnItemLongClickListener mOnItemLongClickListener;
     private List<T> arrayList;
     private Context context;
 
-    public ABasicRecycleAdapter(Context context) {
+    public ABasicPullRecycleAdapter(Context context) {
         this(context, null);
     }
 
-    public ABasicRecycleAdapter(Context context, List<T> arrList) {
+    public ABasicPullRecycleAdapter(Context context, List<T> arrList) {
         this.context = context;
         if (null == arrList)
             arrList = new ArrayList<>();
@@ -60,6 +65,10 @@ public abstract class ABasicRecycleAdapter<T, VH extends ABasicViewHolder> exten
         return mInflater.inflate(adapterLayout(), parent, false);
     }
 
+    public void setCount(int count) {
+        mCount = count;
+    }
+
     public Context getContext() {
         return context;
     }
@@ -68,23 +77,22 @@ public abstract class ABasicRecycleAdapter<T, VH extends ABasicViewHolder> exten
         return (Activity) context;
     }
 
-    public Intent getIntent() {
-        Activity activity = getActivity();
-        return null == activity ? null : activity.getIntent();
-    }
-
     @Override
     public long getItemId(int position) {
         return position;
     }
 
     public T getItem(int position) {
-        return null == arrayList ? null : arrayList.get(position);
+        try {
+            return arrayList.get(position);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return null == arrayList ? 0 : arrayList.size();
+        return mCount;
     }
 
     public void setOnItemClickListener(ABasicViewHolder.OnItemClickListener itemClickListener) {

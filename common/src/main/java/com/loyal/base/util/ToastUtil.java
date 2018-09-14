@@ -33,7 +33,7 @@ public class ToastUtil implements IBaseContacts {
     public static void showDialog(final Activity context, final CharSequence content, final boolean isFinish) {
         CommandDialog.Builder builder = new CommandDialog.Builder(context);
         builder.setContent(content).setOutsideCancel(false).setOutsideCancel(false);
-        builder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确定"}).setClickListener(new CommandViewClickListener() {
+        builder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText("确 定").setClickListener(new CommandViewClickListener() {
             @Override
             public void onViewClick(CommandDialog dialog, View view, Object tag) {
                 if (dialog != null && dialog.isShowing())

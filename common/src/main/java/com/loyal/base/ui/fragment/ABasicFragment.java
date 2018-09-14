@@ -214,7 +214,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.setBottomBtnType(isFinish ? TypeImpl.RIGHT : TypeImpl.LEFT).setBtnText(new String[]{"确 定"});
+        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText( "确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
             public void onViewClick(CommandDialog dialog, View view, Object tag) {

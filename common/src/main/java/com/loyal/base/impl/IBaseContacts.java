@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
@@ -20,14 +19,13 @@ public interface IBaseContacts {
         public static final String TIME_YMD = "yyyy-MM-dd";
         public static final String TIME_HM = "HH:mm";
         public static final String TIME_HMS = "HH:mm:ss";
+        public static final String TIME_MDHM = "MM-dd HH:mm";
+        public static final String TIME_YM = "yyyy-MM";
 
-        public static final String MONTH_DAY_HOUR_MIN = "MM-dd HH:mm";
-        public static final String YEAR_MONTH = "yyyy-MM";
         public static final String ipAdd = "192.168.0.1";
         public static final String port = "9080";
         public static final String http = "http";
         public static final String https = "https";
-        public static final String action = "android.do?method=";
         public static final String nameSpace = "command";
         public static final String baseUrl = String.format("%s://%s:%s/%s/", http, ipAdd, port, nameSpace);
 
@@ -87,11 +85,11 @@ public interface IBaseContacts {
     }
 
     final class TypeImpl {
-        public static final String NONE = "none";
-        public static final String LEFT = "left";
-        public static final String RIGHT = "right";
+        public static final int NONE = 0x00000001;
+        public static final int CANCEL = 0x00000002;
+        public static final int NEXT = 0x00000004;
 
-        @StringDef({NONE, LEFT, RIGHT})
+        @IntDef({NONE, CANCEL, NEXT})
         @Retention(RetentionPolicy.SOURCE)
         public @interface source {
         }

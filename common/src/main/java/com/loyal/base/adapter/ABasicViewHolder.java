@@ -31,10 +31,7 @@ public abstract class ABasicViewHolder extends RecyclerView.ViewHolder implement
 
     @Override
     public boolean onLongClick(View v) {
-        if (mItemLongClickListener != null) {
-            mItemLongClickListener.onItemLongClick(v, getLayoutPosition());
-        }
-        return true;
+        return mItemLongClickListener == null || mItemLongClickListener.onItemLongClick(v, getLayoutPosition());
     }
 
     public interface OnItemClickListener {
