@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.loyal.base.adapter.BasePagerAdapter;
 import com.loyal.base.sample.R;
+import com.loyal.base.sample.base.ABaseFragActivity;
 import com.loyal.base.sample.ui.fragment.BlankFragment;
 
 import java.util.ArrayList;

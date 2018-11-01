@@ -1,5 +1,5 @@
 package com.loyal.base.rxjava.impl;
 
-public interface UnSubscribeListener {
+public interface UnSubscriberListener {
     void onUnsubscribe();
 }

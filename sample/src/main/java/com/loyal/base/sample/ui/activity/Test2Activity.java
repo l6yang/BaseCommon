@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.loyal.base.adapter.BasePagerAdapter;
 import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.sample.R;
+import com.loyal.base.sample.base.ABaseActivity;
 import com.loyal.base.sample.ui.fragment.BlankFragment;
 import com.loyal.base.util.OutUtil;
 

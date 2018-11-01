@@ -15,8 +15,16 @@ public class RetrofitManage implements IBaseContacts {
     private static RetrofitManage mInstance;
     private Retrofit retrofit;
 
+    private RetrofitManage() {
+        reSetIpAdd();
+    }
+
     private RetrofitManage(String baseUrl) {
         reSetIpAdd(baseUrl);
+    }
+
+    private void reSetIpAdd() {
+        reSetIpAdd("http://192.168.0.1/");
     }
 
     private void reSetIpAdd(String baseUrl) {
@@ -45,6 +53,17 @@ public class RetrofitManage implements IBaseContacts {
                 else mInstance.reSetIpAdd(baseUrl);
             }
         } else mInstance.reSetIpAdd(baseUrl);
+        return mInstance;
+    }
+
+    public static RetrofitManage getInstance() {
+        if (mInstance == null) {
+            synchronized (RetrofitManage.class) {
+                if (mInstance == null)
+                    mInstance = new RetrofitManage();
+                else mInstance.reSetIpAdd();
+            }
+        } else mInstance.reSetIpAdd();
         return mInstance;
     }
 

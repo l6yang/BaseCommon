@@ -1,4 +1,4 @@
-package com.loyal.base.sample.ui.activity;
+package com.loyal.base.sample.base;
 
 import com.loyal.base.ui.activity.ABasicFragActivity;
 

@@ -1,4 +1,4 @@
-package com.loyal.base.sample.impl;
+package com.loyal.base.sample.rxjava;
 
 import java.util.Map;
 

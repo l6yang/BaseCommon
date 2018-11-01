@@ -6,18 +6,18 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.loyal.base.rxjava.RxUtil;
-import com.loyal.base.rxjava.impl.SubscribeListener;
+import com.loyal.base.rxjava.impl.RxSubscriberListener;
 import com.loyal.base.sample.beans.ResultBean;
 import com.loyal.base.sample.beans.UpdateBean;
 import com.loyal.base.sample.notify.NotifyNotification;
 import com.loyal.base.sample.notify.UpdateNotification;
-import com.loyal.base.sample.rxjava.RxServerSubscribe;
+import com.loyal.base.sample.rxjava.RxServerSubscriber;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.DeviceUtil;
 import com.loyal.base.util.GsonUtil;
 import com.loyal.base.util.OutUtil;
 
-public class CheckUpdateService extends IntentService implements SubscribeListener<String> {
+public class CheckUpdateService extends IntentService implements RxSubscriberListener<String> {
     private static final String ACTION = "service.action.CheckUpdate";
 
     private static final String EXTRA_PARAM1 = "service.extra.PARAM1";
@@ -47,7 +47,7 @@ public class CheckUpdateService extends IntentService implements SubscribeListen
 
     private void handleAction(Intent intent) {
         String ipAdd = intent.getStringExtra(EXTRA_PARAM1);
-        RxServerSubscribe<String> subscriber = new RxServerSubscribe<>(this, ipAdd);
+        RxServerSubscriber<String> subscriber = new RxServerSubscriber<>(this, ipAdd);
         subscriber.showProgressDialog(false);
         subscriber.setTag(intent).setSubscribeListener(this);
         String sbsn = DeviceUtil.deviceSerial();

@@ -10,13 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.loyal.base.rxjava.RxUtil;
-import com.loyal.base.rxjava.impl.SubscribeListener;
+import com.loyal.base.rxjava.impl.RxSubscriberListener;
 import com.loyal.base.sample.R;
-import com.loyal.base.sample.rxjava.RxServerSubscribe;
+import com.loyal.base.sample.base.ABaseActivity;
+import com.loyal.base.sample.rxjava.RxServerSubscriber;
 
 import butterknife.BindView;
 
-public class LoginActivity extends ABaseActivity implements SubscribeListener<String> {
+public class LoginActivity extends ABaseActivity implements RxSubscriberListener<String> {
 
     @BindView(R.id.email)
     AutoCompleteTextView mEmailView;
@@ -54,8 +55,8 @@ public class LoginActivity extends ABaseActivity implements SubscribeListener<St
     private void attemptLogin() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        RxServerSubscribe<String> subscriber = new RxServerSubscribe<>(this, "192.168.0.106:8080");
-        subscriber.setMessage("登录中...").showProgressDialog(true).setSubscribeListener(this);
+        RxServerSubscriber<String> subscriber = new RxServerSubscriber<>(this, "192.168.0.106:8080");
+        subscriber.setDialogMessage("登录中...").showProgressDialog(true).setSubscribeListener(this);
         RxUtil.rxExecuted(subscriber.login(email, password), subscriber);
     }
 

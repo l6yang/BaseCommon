@@ -1,6 +1,8 @@
 package com.loyal.base.rxjava.impl;
 
-public interface ServerBaseUrlImpl {
+import com.loyal.base.rxjava.BaseRxServerSubscriber;
+
+public interface ServerBaseUrlImpl<T> {
     String httpOrHttps();//http 或者https
 
     String serverNameSpace();//访问路径
@@ -13,4 +15,8 @@ public interface ServerBaseUrlImpl {
 
     String defaultPort();//端口配置
 
+    /**
+     * @param url IP地址或者访问地址
+     */
+    BaseRxServerSubscriber<T> setUrl(String url);
 }
