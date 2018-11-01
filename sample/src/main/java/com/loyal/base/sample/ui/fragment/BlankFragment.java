@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.sample.R;
 import com.loyal.base.sample.ui.activity.Test2Activity;
+import com.loyal.base.util.OutUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,13 +79,13 @@ public class BlankFragment extends ABaseFragment implements OnSinglePermissionLi
     public void onSinglePermission(int reqCode, boolean successful) {
         switch (reqCode) {
             case 5:
-                System.out.println(successful ? "存储权限获取成功" : "存储权限获取失败");
+                OutUtil.println(successful ? "存储权限获取成功" : "存储权限获取失败");
                 break;
             case 6:
-                System.out.println(successful ? "定位权限获取成功" : "定位权限获取失败");
+                OutUtil.println(successful ? "定位权限获取成功" : "定位权限获取失败");
                 break;
             case 7:
-                System.out.println(successful ? "读取手机权限获取成功" : "读取手机权限获取失败");
+                OutUtil.println(successful ? "读取手机权限获取成功" : "读取手机权限获取失败");
                 break;
         }
     }

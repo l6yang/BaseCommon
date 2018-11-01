@@ -13,4 +13,15 @@ public class RxUtil {
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
+
+    /**
+     * 使用的时候需要在UI线程中更新消息
+     * exp：handler，runOnUiThread(Runnable)
+     */
+    public static <T> void rxExecutedByIO(Observable<T> observable, Observer<T> observer) {
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(observer);
+    }
 }

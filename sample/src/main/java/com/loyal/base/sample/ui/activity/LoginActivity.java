@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.loyal.base.rxjava.RxUtil;
 import com.loyal.base.rxjava.impl.SubscribeListener;
 import com.loyal.base.sample.R;
-import com.loyal.base.sample.rxjava.RxServerUnSubscribe;
+import com.loyal.base.sample.rxjava.RxServerSubscribe;
 
 import butterknife.BindView;
 
@@ -54,7 +54,7 @@ public class LoginActivity extends ABaseActivity implements SubscribeListener<St
     private void attemptLogin() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        RxServerUnSubscribe<String> subscriber = new RxServerUnSubscribe<>(this, "192.168.0.106:8080");
+        RxServerSubscribe<String> subscriber = new RxServerSubscribe<>(this, "192.168.0.106:8080");
         subscriber.setMessage("登录中...").showProgressDialog(true).setSubscribeListener(this);
         RxUtil.rxExecuted(subscriber.login(email, password), subscriber);
     }

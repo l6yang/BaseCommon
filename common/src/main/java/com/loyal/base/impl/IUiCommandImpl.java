@@ -2,6 +2,7 @@ package com.loyal.base.impl;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.view.View;
 import android.widget.Spinner;
 
 public interface IUiCommandImpl extends IBaseContacts {
@@ -34,4 +35,6 @@ public interface IUiCommandImpl extends IBaseContacts {
     void showDialog(@NonNull CharSequence sequence, boolean finish);
 
     String replaceNull(CharSequence sequence);
+
+    void hideKeyBoard(@NonNull View view);
 }

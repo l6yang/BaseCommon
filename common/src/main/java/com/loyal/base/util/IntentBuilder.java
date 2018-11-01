@@ -54,6 +54,15 @@ public class IntentBuilder extends Intent implements IntentFrame.ActFrame, Inten
     }
 
     @Override
+    public void startActivityByAct(@Nullable String className) {
+        try {
+            startActivityByAct(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void startActivityByAct(@Nullable Class<?> tClass) {
         if (null == activity)
             throw new NullPointerException("the Context must not null");
@@ -62,6 +71,15 @@ public class IntentBuilder extends Intent implements IntentFrame.ActFrame, Inten
         else {
             setClass(activity, tClass);
             activity.startActivity(this);
+        }
+    }
+
+    @Override
+    public void startActivityForResultByAct(@Nullable String className, int reqCode) {
+        try {
+            startActivityForResultByAct(Class.forName(className), reqCode);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -78,6 +96,15 @@ public class IntentBuilder extends Intent implements IntentFrame.ActFrame, Inten
     }
 
     @Override
+    public void startServiceByAct(@Nullable String className) {
+        try {
+            startServiceByAct(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void startServiceByAct(@Nullable Class<?> tClass) {
         if (null == tClass)
             throw new NullPointerException("No Activity found to handle Intent {  }");
@@ -88,6 +115,15 @@ public class IntentBuilder extends Intent implements IntentFrame.ActFrame, Inten
                 setClass(activity, tClass);
                 activity.startService(this);
             }
+        }
+    }
+
+    @Override
+    public void startActivityByFrag(@Nullable String className) {
+        try {
+            startActivityByFrag(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -109,6 +145,15 @@ public class IntentBuilder extends Intent implements IntentFrame.ActFrame, Inten
     }
 
     @Override
+    public void startActivityForResultByFrag(@Nullable String className, int reqCode) {
+        try {
+            startActivityForResultByFrag(Class.forName(className), reqCode);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void startActivityForResultByFrag(@Nullable Class<?> tClass, int reqCode) {
         if (null == fragment)
             throw new NullPointerException("The Fragment must not null");
@@ -122,6 +167,15 @@ public class IntentBuilder extends Intent implements IntentFrame.ActFrame, Inten
                 setClass(context, tClass);
                 fragment.startActivityForResult(this, reqCode);
             }
+        }
+    }
+
+    @Override
+    public void startServiceByFrag(@Nullable String className) {
+        try {
+            startServiceByFrag(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

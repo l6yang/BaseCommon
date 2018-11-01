@@ -12,6 +12,7 @@ import com.loyal.base.adapter.BasePagerAdapter;
 import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.sample.R;
 import com.loyal.base.sample.ui.fragment.BlankFragment;
+import com.loyal.base.util.OutUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,6 @@ public class Test2Activity extends ABaseActivity implements BottomNavigationView
 
     @Override
     public void onSinglePermission(int reqCode, boolean successful) {
-        System.out.println(successful ? "请求相机权限成功" : "请求相机权限失败");
+        OutUtil.println(successful ? "请求相机权限成功" : "请求相机权限失败");
     }
 }

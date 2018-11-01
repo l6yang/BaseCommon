@@ -63,7 +63,7 @@ public class FileUtil {
                 return content;
             } else {
                 FileInputStream fis = new FileInputStream(file);
-                return ResUtil.getStrFromRes(fis);
+                return ResUtil.stream2String(fis);
             }
         } catch (Exception e) {
             return "";

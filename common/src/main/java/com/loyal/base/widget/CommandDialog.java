@@ -7,6 +7,8 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.loyal.base.R;
@@ -16,7 +18,7 @@ import com.loyal.base.impl.IBaseContacts;
 public class CommandDialog extends AppCompatDialog implements IBaseContacts {
 
     private CommandDialog(@NonNull Context context) {
-        this(context, R.style.dialogTheme);
+        this(context, R.style.DialogTheme);
     }
 
     private CommandDialog(@NonNull Context context, @StyleRes int themeResId) {
@@ -48,7 +50,7 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
         private TextView textTitle, textContent;
         private View layoutNext, layoutCancel;
         private TextView btnNext, btnCancel;
-        private boolean cancelable = false, outsideCancelable = false;
+        private boolean cancelable = false, outsideCancelable = false, showInAsServices = false;
         private Object objectTag;
 
         public Builder(Context context) {
@@ -80,6 +82,15 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
 
         public Builder setContent(CharSequence sequence) {
             this.sequenceContent = sequence;
+            return this;
+        }
+
+        /**
+         * @param asInService 是否运行于后台，如果在后台Service中使用弹出对话框时，需要加此权限
+         * uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"
+         */
+        public Builder showInServices(boolean asInService) {
+            this.showInAsServices = asInService;
             return this;
         }
 
@@ -208,6 +219,11 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
             baseDialog.setCancelable(cancelable);
             baseDialog.setCanceledOnTouchOutside(outsideCancelable);
             baseDialog.setTag(objectTag);
+            if (showInAsServices) {
+                Window window = baseDialog.getWindow();
+                if (null != window)
+                    window.setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+            }
             initDialogView();
             switch (statusType) {
                 case TypeImpl.NONE:

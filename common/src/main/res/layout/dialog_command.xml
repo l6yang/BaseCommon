@@ -65,7 +65,7 @@
                     android:background="@drawable/drawable_dialog_foot_btn"
                     android:padding="10dp"
                     android:text="@string/refuse"
-                    android:textColor="@color/press_dialog_footer_btn"
+                    android:textColor="@color/dialog_footer_btn"
                     android:textSize="@dimen/text_sp_18" />
             </FrameLayout>
 
@@ -85,7 +85,7 @@
                     android:background="@drawable/drawable_dialog_foot_btn"
                     android:padding="10dp"
                     android:text="@string/agree"
-                    android:textColor="@color/press_dialog_footer_btn"
+                    android:textColor="@color/dialog_footer_btn"
                     android:textSize="@dimen/text_sp_18" />
             </FrameLayout>
         </LinearLayout>

@@ -2,7 +2,9 @@ package com.loyal.base.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.view.View;
@@ -23,14 +25,19 @@ public class ToastUtil implements IBaseContacts {
             toast.setText(sequence);
             toast.setDuration(Toast.LENGTH_SHORT);
         }
-        toast.show();
+        Handler handlerThree=new Handler(Looper.getMainLooper());
+        handlerThree.post(new Runnable(){
+            public void run(){
+                toast.show();
+            }
+        });
     }
 
     public static void showToast(@NonNull Context context, @StringRes int resId) {
         showToast(context, context.getString(resId));
     }
 
-    public static void showDialog(final Activity context, final CharSequence content, final boolean isFinish) {
+    public static void showDialog(final Context context, final CharSequence content, final boolean isFinish) {
         CommandDialog.Builder builder = new CommandDialog.Builder(context);
         builder.setContent(content).setOutsideCancel(false).setOutsideCancel(false);
         builder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText("确 定").setClickListener(new CommandViewClickListener() {
@@ -40,7 +47,7 @@ public class ToastUtil implements IBaseContacts {
                     dialog.dismiss();
                 if (isFinish) {
                     if (context != null)
-                        context.finish();
+                        ((Activity)context).finish();
                 }
             }
         });

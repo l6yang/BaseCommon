@@ -1,5 +1,6 @@
 package com.loyal.base.ui.activity;
 
+import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,10 +9,12 @@ import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Size;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -109,6 +112,21 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     }
 
     @Override
+    public void startActivityByAct(@Nullable String className) {
+        intentBuilder.startActivityByAct(className);
+    }
+
+    @Override
+    public void startActivityForResultByAct(@Nullable String className, int reqCode) {
+        intentBuilder.startActivityForResultByAct(className, reqCode);
+    }
+
+    @Override
+    public void startServiceByAct(@Nullable String className) {
+        intentBuilder.startServiceByAct(className);
+    }
+
+    @Override
     public void startActivityByAct(@Nullable Class<?> tClass) {
         intentBuilder.startActivityByAct(tClass);
     }
@@ -195,6 +213,13 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     }
 
     @Override
+    public void hideKeyBoard(@NonNull View view) {
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (im != null)
+            im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    @Override
     public void showErrorDialog(@NonNull CharSequence sequence, Throwable e, boolean finish) {
         String error = null == e ? "" : ConnectUtil.getError(e);
         showDialog(replaceNull(sequence) + (TextUtils.isEmpty(error) ? "" : "\n" + error), finish);
@@ -207,7 +232,12 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
             toast.setText(sequence);
             toast.setDuration(Toast.LENGTH_SHORT);
         }
-        toast.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                toast.show();
+            }
+        });
     }
 
     private void initCompatDialog() {
@@ -232,7 +262,12 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
                 }
             }
         });
-        dialogBuilder.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialogBuilder.show();
+            }
+        });
     }
 
     public void dismissCompatDialog() {
@@ -264,6 +299,35 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
             }
         }
     };
+
+    /**
+     * outsideTouch =true
+     */
+    public void showNextConfirmDialog(String message, CommandViewClickListener nextListener) {
+        showConfirmDialog(message, TypeImpl.NEXT, new String[]{"确 定"}, nextListener, true);
+    }
+
+    public void showNextConfirmDialog(String message, CommandViewClickListener nextListener, boolean outsideCancel) {
+        showConfirmDialog(message, TypeImpl.NEXT, new String[]{"确 定"}, nextListener, outsideCancel);
+    }
+
+    public void showConfirmDialog(String message, @TypeImpl.source int btnType, @Size(min = 1, max = 2) @NonNull String[] btnText, CommandViewClickListener clickListener) {
+        showConfirmDialog(message, btnType, btnText, clickListener, false);
+    }
+
+    /**
+     * @param btnText 0-nextText
+     *                1-cancelText
+     */
+    public void showConfirmDialog(String message, @TypeImpl.source int btnType, @Size(min = 1, max = 2) @NonNull String[] btnText, CommandViewClickListener clickListener, boolean outsideCancel) {
+        CommandDialog.Builder dialogBuilder = new CommandDialog.Builder(this);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setOutsideCancel(outsideCancel);
+        dialogBuilder.setContent(replaceNull(message));
+        dialogBuilder.showWhichBtn(btnType).setNextBtnText(btnText[0]).setCancelBtnText(btnText.length > 1 ? btnText[1] : "");
+        dialogBuilder.setClickListener(clickListener);
+        dialogBuilder.show();
+    }
 
     @Override
     protected void onPause() {

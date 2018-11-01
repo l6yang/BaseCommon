@@ -1,6 +1,7 @@
 package com.loyal.base.download;
 
 import com.loyal.base.impl.IBaseContacts;
+import com.loyal.base.util.FileUtil;
 import com.loyal.base.util.IOUtil;
 
 import java.io.File;
@@ -62,28 +63,10 @@ public class DownLoadAPI implements IBaseContacts {
                 .doOnNext(new Consumer<InputStream>() {
                     @Override
                     public void accept(@NonNull InputStream inputStream) throws Exception {
-                        writeFile(inputStream, file);
+                        FileUtil.writeFile(inputStream, file);
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
-    }
-
-    public static void writeFile(InputStream in, File file) {
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
-            byte[] buffer = new byte[1024 * 128];
-            int len;
-            while ((len = in.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-            }
-            fos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            IOUtil.closeStream(fos);
-            IOUtil.closeStream(in);
-        }
     }
 
     public interface DownloadService {

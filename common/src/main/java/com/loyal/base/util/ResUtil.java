@@ -35,7 +35,7 @@ public class ResUtil {
         }
     }
 
-    public static String getStrFromRes(InputStream is) {
+    public static String stream2String(InputStream is) {
         if (is == null)
             return "";
         BufferedReader bufferedReader = null;
@@ -59,10 +59,10 @@ public class ResUtil {
     /**
      * {@link #openAssetFile(Context, String)}
      */
-    public static String getStrFromRes(Context context, String fileName) {
+    public static String assetsFile2String(Context context, String fileName) {
         InputStream is = openAssetFile(context, fileName);
         if (is == null)
             return "";
-        return getStrFromRes(is);
+        return stream2String(is);
     }
 }

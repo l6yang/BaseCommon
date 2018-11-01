@@ -19,11 +19,11 @@ import java.util.List;
  * 继承此Adapter，需要设置{@link ABasicPullRecycleAdapter#setCount(int)}
  * 在Adapter里面设置或在外面设置都一样
  */
-public abstract class ABasicPullRecycleAdapter<T, VH extends ABasicViewHolder> extends RecyclerView.Adapter<VH> implements IBaseContacts {
+public abstract class ABasicPullRecycleAdapter<T, VH extends ABasicRecyclerViewHolder> extends RecyclerView.Adapter<VH> implements IBaseContacts {
     private int mCount = 0;
     private LayoutInflater mInflater;
-    protected ABasicViewHolder.OnItemClickListener mOnItemClickListener;
-    protected ABasicViewHolder.OnItemLongClickListener mOnItemLongClickListener;
+    protected ABasicRecyclerViewHolder.OnItemClickListener mOnItemClickListener;
+    protected ABasicRecyclerViewHolder.OnItemLongClickListener mOnItemLongClickListener;
     private List<T> arrayList;
     private Context context;
 
@@ -95,11 +95,11 @@ public abstract class ABasicPullRecycleAdapter<T, VH extends ABasicViewHolder> e
         return mCount;
     }
 
-    public void setOnItemClickListener(ABasicViewHolder.OnItemClickListener itemClickListener) {
+    public void setOnItemClickListener(ABasicRecyclerViewHolder.OnItemClickListener itemClickListener) {
         this.mOnItemClickListener = itemClickListener;
     }
 
-    public boolean setOnItemLongClickListener(ABasicViewHolder.OnItemLongClickListener listener) {
+    public boolean setOnItemLongClickListener(ABasicRecyclerViewHolder.OnItemLongClickListener listener) {
         this.mOnItemLongClickListener = listener;
         return false;
     }

@@ -7,8 +7,10 @@ public interface ServerBaseUrlImpl {
 
     /**
      * @param clientIp 客户端配置的IP地址
-     * @return http://ip地址:端口/项目访问地址;https://ip地址:端口/项目访问地址
-     *
+     * @return http://ip地址:端口/项目访问地址 或 https://ip地址:端口/项目访问地址
      */
     String baseUrl(String clientIp);
+
+    String defaultPort();//端口配置
+
 }

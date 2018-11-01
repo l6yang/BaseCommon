@@ -3,8 +3,8 @@ package com.loyal.base.ui.activity;
 import android.support.annotation.IntRange;
 import android.support.annotation.Size;
 
-import com.loyal.base.impl.OnSinglePermissionListener;
 import com.loyal.base.impl.OnMultiplePermissionsListener;
+import com.loyal.base.impl.OnSinglePermissionListener;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -31,7 +31,8 @@ public abstract class ABasicPerMissionActivity extends ABasicActivity {
     }
 
     /**
-     * 用于多项权限申请
+     * 用于多项权限申请（有点小问题）
+     * 2018-09-18 10:30:00
      */
     public void multiplePermissions(final OnMultiplePermissionsListener listener, @Size(min = 1) final String... permission) {
         if (null == rxPermissions)

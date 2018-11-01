@@ -46,7 +46,6 @@ public class GsonUtil {
         return gson.fromJson(json, type);
     }
 
-    //----------------------------------
     public static <T> T json2Bean(String json, Class<T> tClass) {
         try {
             return gson.fromJson(json, tClass);
@@ -92,14 +91,14 @@ public class GsonUtil {
     public static <T> List<T> jsonFile2BeanList(Context context, String resName, Class<T> tClass) {
         if (TextUtils.isEmpty(resName))
             return new ArrayList<>();
-        String json = ResUtil.getStrFromRes(context, resName);
+        String json = ResUtil.assetsFile2String(context, resName);
         return json2BeanList(json, tClass);
     }
 
     public static <T> T jsonFile2Bean(Context context, String resName, Class<T> tClass) {
         if (TextUtils.isEmpty(resName))
             return null;
-        String json = ResUtil.getStrFromRes(context, resName);
+        String json = ResUtil.assetsFile2String(context, resName);
         return TextUtils.isEmpty(resName) ? null : json2Bean(json, tClass);
     }
 

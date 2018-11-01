@@ -13,7 +13,7 @@ import java.net.URLEncoder;
 
 public interface IBaseContacts {
 
-    class BaseStr {
+    final class BaseStr {
         public static final String TIME_ALL = "yyyy-MM-dd HH:mm:ss";
         public static final String TIME_WEEK = "yyyy-MM-dd EEEE";
         public static final String TIME_YMD = "yyyy-MM-dd";
@@ -22,12 +22,12 @@ public interface IBaseContacts {
         public static final String TIME_MDHM = "MM-dd HH:mm";
         public static final String TIME_YM = "yyyy-MM";
 
-        public static final String ipAdd = "192.168.0.1";
-        public static final String port = "9080";
+        public static final String defaultIpAdd = "192.168.0.1";
+        public static final String defaultPort = "9080";
         public static final String http = "http";
         public static final String https = "https";
         public static final String nameSpace = "command";
-        public static final String baseUrl = String.format("%s://%s:%s/%s/", http, ipAdd, port, nameSpace);
+        public static final String baseUrl = String.format("%s://%s:%s/%s/", http, defaultIpAdd, defaultPort, nameSpace);
 
         public static String replaceNull(CharSequence sequence) {
             return TextUtils.isEmpty(sequence) ? "" : sequence.toString().trim();
@@ -54,7 +54,7 @@ public interface IBaseContacts {
         }
     }
 
-    class PerMission {
+    final class PerMission {
         //日历
         public static final String READ_CALENDAR = Manifest.permission.READ_CALENDAR;
         public static final String WRITE_CALENDAR = Manifest.permission.WRITE_CALENDAR;

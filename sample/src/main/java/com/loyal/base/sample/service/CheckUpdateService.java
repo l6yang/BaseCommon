@@ -11,10 +11,11 @@ import com.loyal.base.sample.beans.ResultBean;
 import com.loyal.base.sample.beans.UpdateBean;
 import com.loyal.base.sample.notify.NotifyNotification;
 import com.loyal.base.sample.notify.UpdateNotification;
-import com.loyal.base.sample.rxjava.RxServerUnSubscribe;
+import com.loyal.base.sample.rxjava.RxServerSubscribe;
 import com.loyal.base.util.ConnectUtil;
 import com.loyal.base.util.DeviceUtil;
 import com.loyal.base.util.GsonUtil;
+import com.loyal.base.util.OutUtil;
 
 public class CheckUpdateService extends IntentService implements SubscribeListener<String> {
     private static final String ACTION = "service.action.CheckUpdate";
@@ -46,7 +47,7 @@ public class CheckUpdateService extends IntentService implements SubscribeListen
 
     private void handleAction(Intent intent) {
         String ipAdd = intent.getStringExtra(EXTRA_PARAM1);
-        RxServerUnSubscribe<String> subscriber = new RxServerUnSubscribe<>(this, ipAdd);
+        RxServerSubscribe<String> subscriber = new RxServerSubscribe<>(this, ipAdd);
         subscriber.showProgressDialog(false);
         subscriber.setTag(intent).setSubscribeListener(this);
         String sbsn = DeviceUtil.deviceSerial();
@@ -56,7 +57,7 @@ public class CheckUpdateService extends IntentService implements SubscribeListen
 
     @Override
     public void onResult(int what, Object tag, String result) {
-        System.out.println("check  onResult：" + result);
+        OutUtil.println("check  onResult：" + result);
         try {
             Intent intent = (Intent) tag;
             String notify = intent.getStringExtra(EXTRA_PARAM2);
@@ -79,7 +80,7 @@ public class CheckUpdateService extends IntentService implements SubscribeListen
 
     @Override
     public void onError(int what, Object tag, Throwable e) {
-        System.out.println("更新失败:" + e);
+        OutUtil.println("更新失败:" + e);
         Intent intent = (Intent) tag;
         String notify = intent.getStringExtra(EXTRA_PARAM2);
         if (TextUtils.equals("setting", notify))

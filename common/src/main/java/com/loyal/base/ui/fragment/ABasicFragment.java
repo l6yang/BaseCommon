@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -82,6 +83,21 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     @Override
+    public void startActivityByFrag(@Nullable String className) {
+        intentBuilder.startActivityByFrag(className);
+    }
+
+    @Override
+    public void startActivityForResultByFrag(@Nullable String className, int reqCode) {
+        intentBuilder.startActivityForResultByFrag(className,reqCode);
+    }
+
+    @Override
+    public void startServiceByFrag(@Nullable String className) {
+        intentBuilder.startServiceByFrag(className);
+    }
+
+    @Override
     public void startActivityByFrag(@Nullable Class<?> tClass) {
         intentBuilder.startActivityByFrag(tClass);
     }
@@ -105,12 +121,14 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public void showErrorToast(int resId, Throwable e) {
-
+        showErrorToast(getString(resId), e);
     }
 
     @Override
     public void showErrorToast(@NonNull CharSequence sequence, Throwable e) {
-
+        String error = ConnectUtil.getError(e);
+        String toastStr = replaceNull(sequence) + (TextUtils.isEmpty(error) ? "" : "\n" + error);
+        showToast(toastStr);
     }
 
     @Override
@@ -177,6 +195,16 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         showDialog(replaceNull(sequence), finish);
     }
 
+    @Override
+    public void hideKeyBoard(@NonNull View view) {
+        Context context = getContext();
+        if (null == context)
+            return;
+        InputMethodManager im = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (im != null)
+            im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
     public Intent getIntent() {
         FragmentActivity activity = getActivity();
         if (null != activity)
@@ -197,7 +225,13 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
             toast.setText(sequence);
             toast.setDuration(Toast.LENGTH_SHORT);
         }
-        toast.show();
+        FragmentActivity activity = getActivity();
+        if (activity != null) activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                toast.show();
+            }
+        });
     }
 
     private void initCompatDialog() {
@@ -214,7 +248,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText( "确 定");
+        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText("确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
             public void onViewClick(CommandDialog dialog, View view, Object tag) {
@@ -225,7 +259,14 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
                 }
             }
         });
-        dialogBuilder.show();
+        FragmentActivity activity = getActivity();
+        if (null != activity)
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialogBuilder.show();
+                }
+            });
     }
 
     public void dismissCompatDialog() {

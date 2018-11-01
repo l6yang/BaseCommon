@@ -13,6 +13,7 @@ import com.loyal.base.sample.FileUtil;
 import com.loyal.base.sample.notify.DownNotification;
 import com.loyal.base.sample.notify.NotifyNotification;
 import com.loyal.base.util.DeviceUtil;
+import com.loyal.base.util.OutUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -74,7 +75,7 @@ public class DownloadService extends IntentService implements IBaseContacts, Dow
 
         String state = IBaseContacts.BaseStr.replaceNull(download.getState());
         int progress = download.getProgress();
-        System.out.println("已下载进度 " + progress + "%");
+        OutUtil.println("已下载进度 " + progress + "%");
         if (TextUtils.equals("loading", state)) {
             String size = DeviceUtil.getDataSize(download.getCurrentFileSize());
             String total = DeviceUtil.getDataSize(download.getTotalFileSize());
@@ -113,7 +114,7 @@ public class DownloadService extends IntentService implements IBaseContacts, Dow
 
     @Override
     public void onNext(InputStream inputStream) {
-        System.out.println("onNext::");
+        OutUtil.println("onNext::");
     }
 
     @Override
@@ -125,7 +126,7 @@ public class DownloadService extends IntentService implements IBaseContacts, Dow
     @Override
     public void onComplete() {
         dispose();
-        System.out.println("onComplete");
+        OutUtil.println("onComplete");
         downloadCompleted(true, file.getPath());
     }
 }
