@@ -26,16 +26,10 @@ public abstract class ABasicListAdapter<T, V extends ABasicListViewHolder> exten
     }
 
     @Override
-    public View getConvertView(int resId, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return inflater.inflate(resId, parent, false);
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         V holder;
         if (convertView == null) {
-            convertView = getConvertView(adapterLayout(), parent);
+            convertView = getConvertView(parent);
             holder = createViewHolder(convertView);
             convertView.setTag(holder);
         } else holder = (V) convertView.getTag();

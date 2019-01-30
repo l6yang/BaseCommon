@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.sample.base.adapter.Adapter2222" />
+
+        <variable
+            name="adapter1"
+            type="Adapter2222" />
+
+        <variable
+            name="adapter2"
+            type="Adapter2222" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:context=".ui.activity.RecycleActivity">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:adapter="@{adapter1}" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:adapter="@{adapter2}"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1" />
+    </LinearLayout>
+</layout>

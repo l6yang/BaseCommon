@@ -42,6 +42,7 @@ public class GpsLocation implements LocationListener, IBaseContacts {
 
     /**
      * @param context must be Activity or Application
+     * @return GpsLocation
      */
     public static GpsLocation getInstance(Context context) {
         if (mInstance == null) {

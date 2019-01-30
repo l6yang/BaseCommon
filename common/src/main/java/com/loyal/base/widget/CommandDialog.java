@@ -2,7 +2,7 @@ package com.loyal.base.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.annotation.Size;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatDialog;
@@ -43,10 +43,10 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
         }
 
         private Context mContext;
-        private CharSequence sequenceTitle = "温馨提示", sequenceContent, sequenceNext, sequenceCancel;
+        private CharSequence sequenceTitle = "温馨提示", sequenceContent, sequenceNext = "确 定", sequenceCancel = "取 消";
         private CommandViewClickListener clickListener;
         private CommandDialog baseDialog;
-        private int statusType = TypeImpl.NONE;
+        private int statusType = TypeImpl.DOUBLE;
         private TextView textTitle, textContent;
         private View layoutNext, layoutCancel;
         private TextView btnNext, btnCancel;
@@ -87,7 +87,7 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
 
         /**
          * @param asInService 是否运行于后台，如果在后台Service中使用弹出对话框时，需要加此权限
-         * uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"
+         *                    uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"
          */
         public Builder showInServices(boolean asInService) {
             this.showInAsServices = asInService;
@@ -127,7 +127,7 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
          *
          * @param sequence nextText or cancelText
          */
-        public Builder setBtnText(@NonNull String sequence) {
+        public Builder showSingleBtn(@NonNull String sequence) {
             switch (statusType) {
                 case TypeImpl.CANCEL:
                     setCancelBtnText(sequence);
@@ -135,7 +135,7 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
                 case TypeImpl.NEXT:
                     setNextBtnText(sequence);
                     break;
-                case TypeImpl.NONE:
+                case TypeImpl.DOUBLE:
                     break;
             }
             return this;
@@ -149,23 +149,50 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
          *                 {@link com.loyal.base.impl.IBaseContacts.TypeImpl#NEXT}
          * @param sequence nextText or cancelText
          */
-        public Builder setBtnText(@TypeImpl.source int whichBtn, @NonNull String sequence) {
-            showWhichBtn(whichBtn);
+        public Builder showSingleBtn(@TypeImpl.source int whichBtn, @NonNull String sequence) {
             switch (whichBtn) {
                 case TypeImpl.CANCEL:
                     setCancelBtnText(sequence);
+                    showWhichBtn(whichBtn);
                     break;
                 case TypeImpl.NEXT:
                     setNextBtnText(sequence);
+                    showWhichBtn(whichBtn);
                     break;
-                case TypeImpl.NONE:
+                case TypeImpl.DOUBLE:
                     break;
             }
             return this;
         }
 
-        public Builder setBtnText(@NonNull String cancelText, @Nullable String nextText) {
-            return showWhichBtn(TypeImpl.NONE).setCancelBtnText(cancelText).setNextBtnText(nextText);
+        public Builder showDoubleBtn(@Size(min = 1, max = 2) String[] btnText) {
+            int length = null == btnText ? 0 : btnText.length;
+            switch (length) {
+                case 1:
+                    setCancelBtnText(btnText[0]);
+                    break;
+                case 2:
+                    setCancelBtnText(btnText[0]);
+                    setNextBtnText(btnText[1]);
+                    break;
+            }
+            return showWhichBtn(TypeImpl.DOUBLE);
+        }
+
+        public Builder showButton(@TypeImpl.source int whichBtn, @Size(min = 1, max = 2) String[] btnText) {
+            switch (whichBtn) {
+                case TypeImpl.CANCEL:
+                    setCancelBtnText(btnText[0]);
+                    break;
+                case TypeImpl.NEXT:
+                    setNextBtnText(btnText[0]);
+                    break;
+                case TypeImpl.DOUBLE:
+                    setCancelBtnText(btnText[0]);
+                    setNextBtnText(btnText[1]);
+                    break;
+            }
+            return showWhichBtn(whichBtn);
         }
 
         public Builder showWhichBtn(@TypeImpl.source int whichBtn) {
@@ -174,21 +201,21 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
         }
 
         public Builder setCancelBtnText(@StringRes int strId) {
-            return showWhichBtn(TypeImpl.CANCEL).setCancelBtnText(mContext.getString(strId));
+            return setCancelBtnText(mContext.getString(strId));
         }
 
         public Builder setCancelBtnText(CharSequence sequence) {
-            showWhichBtn(TypeImpl.CANCEL).sequenceCancel = sequence;
-            return this;
+            sequenceCancel = sequence;
+            return showWhichBtn(TypeImpl.CANCEL);
         }
 
         public Builder setNextBtnText(@StringRes int strId) {
-            return showWhichBtn(TypeImpl.NEXT).setNextBtnText(mContext.getString(strId));
+            return setNextBtnText(mContext.getString(strId));
         }
 
         public Builder setNextBtnText(CharSequence sequence) {
-            showWhichBtn(TypeImpl.NEXT).sequenceNext = sequence;
-            return this;
+            sequenceNext = sequence;
+            return showWhichBtn(TypeImpl.NEXT);
         }
 
         public void setClickListener(CommandViewClickListener listener) {
@@ -226,7 +253,7 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
             }
             initDialogView();
             switch (statusType) {
-                case TypeImpl.NONE:
+                case TypeImpl.DOUBLE:
                     if (null != layoutNext)
                         layoutNext.setVisibility(View.VISIBLE);
                     if (null != layoutCancel)

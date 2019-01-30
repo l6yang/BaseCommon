@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.loyal.base.impl.AdapterImpl;
-import com.loyal.base.util.TimeUtil;
+import com.loyal.kit.GsonUtil;
+import com.loyal.kit.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,28 @@ public abstract class ABasicRecycleAdapter<T, VH extends ABasicRecyclerViewHolde
     public ABasicRecycleAdapter(Context context, List<T> arrList) {
         this.context = context;
         changedList(arrList);
+    }
+
+    /**
+     * @param context Context
+     * @param t       class
+     * @param json    如："test.json";
+     *                默认 json格式的文件
+     */
+    public ABasicRecycleAdapter(Context context, String json, Class<T> t) {
+        this(context, json, t, true);
+    }
+
+    /**
+     * @param context Context
+     * @param isFile  true：json格式的文件名
+     *                false：标准的json格式字符串
+     * @param t       class
+     * @param json    isFile=true 如："test.json";
+     *                isFile=false 如：{"name":"张三"};
+     */
+    public ABasicRecycleAdapter(Context context, String json, Class<T> t, boolean isFile) {
+        this(context, GsonUtil.json2BeanList(context, json, t, isFile));
     }
 
     @Override
@@ -58,14 +81,9 @@ public abstract class ABasicRecycleAdapter<T, VH extends ABasicRecyclerViewHolde
     public abstract @LayoutRes
     int adapterLayout();
 
-    @Override
-    public View getConvertView(int resId, ViewGroup parent) {
+    public View getConvertView(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         return inflater.inflate(adapterLayout(), parent, false);
-    }
-
-    public View getConvertView(ViewGroup parent) {
-        return getConvertView(adapterLayout(), parent);
     }
 
     @Override

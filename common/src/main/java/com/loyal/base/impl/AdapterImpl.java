@@ -36,6 +36,4 @@ public interface AdapterImpl<T> extends IBaseContacts {
 
     @NonNull
     String subEndTime(CharSequence time);
-
-    View getConvertView(@LayoutRes int resId, ViewGroup parent);
 }

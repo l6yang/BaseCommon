@@ -14,13 +14,6 @@ import java.net.URLEncoder;
 public interface IBaseContacts {
 
     final class BaseStr {
-        public static final String TIME_ALL = "yyyy-MM-dd HH:mm:ss";
-        public static final String TIME_WEEK = "yyyy-MM-dd EEEE";
-        public static final String TIME_YMD = "yyyy-MM-dd";
-        public static final String TIME_HM = "HH:mm";
-        public static final String TIME_HMS = "HH:mm:ss";
-        public static final String TIME_MDHM = "MM-dd HH:mm";
-        public static final String TIME_YM = "yyyy-MM";
 
         public static final String defaultIpAdd = "192.168.0.1";
         public static final String defaultPort = "9080";
@@ -34,20 +27,28 @@ public interface IBaseContacts {
         }
 
         public static String encodeStr2Utf(String str) {
+            return encodeString(str, "utf-8");
+        }
+
+        public static String encodeString(String str, String enc) {
             if (TextUtils.isEmpty(str))
                 return "";
             try {
-                return URLEncoder.encode(str, "utf-8");
+                return URLEncoder.encode(str, enc);
             } catch (Exception e) {
                 return str;
             }
         }
 
         public static String decodeStr2Utf(String str) {
+            return decodeString(str, "utf-8");
+        }
+
+        public static String decodeString(String str, String enc) {
             if (TextUtils.isEmpty(str))
                 return "";
             try {
-                return URLDecoder.decode(str, "utf-8");
+                return URLDecoder.decode(str, enc);
             } catch (Exception e) {
                 return str;
             }
@@ -85,11 +86,11 @@ public interface IBaseContacts {
     }
 
     final class TypeImpl {
-        public static final int NONE = 0x00000001;
+        public static final int DOUBLE = 0x00000000;
         public static final int CANCEL = 0x00000002;
         public static final int NEXT = 0x00000004;
 
-        @IntDef({NONE, CANCEL, NEXT})
+        @IntDef({DOUBLE, CANCEL, NEXT})
         @Retention(RetentionPolicy.SOURCE)
         public @interface source {
         }

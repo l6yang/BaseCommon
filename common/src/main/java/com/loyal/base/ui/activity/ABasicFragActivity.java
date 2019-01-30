@@ -11,13 +11,13 @@ import com.loyal.base.ui.fragment.ABasicFragment;
 public abstract class ABasicFragActivity extends ABasicPerMissionActivity implements IFrag2ActListener {
 
     @Override
-    public void onFrag2Act(String tag, Object... objectParam) {
-       /* if (TextUtils.equals("showToast", tag)) {
+    public void onFrag2Act(String tag, Object... objectParams) {
+       /* if (TextUtils.equals("show", tag)) {
             Object object = objectParam[0];
             if (object instanceof CharSequence) {
-                showToast((CharSequence) object);
+                show((CharSequence) object);
             } else if (object instanceof Integer) {
-                showToast((Integer) object);
+                show((Integer) object);
             }
         }*/
     }

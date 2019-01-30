@@ -13,25 +13,24 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.loyal.base.impl.CommandViewClickListener;
 import com.loyal.base.impl.IFrag2ActListener;
-import com.loyal.base.impl.IUiCommandImpl;
-import com.loyal.base.impl.IntentFrame;
+import com.loyal.base.impl.IUICommandImpl;
+import com.loyal.kit.IntentBuilder;
 import com.loyal.base.ui.activity.ABasicFragActivity;
-import com.loyal.base.util.ConnectUtil;
-import com.loyal.base.util.IntentBuilder;
-import com.loyal.base.util.ObjectUtil;
-import com.loyal.base.util.TimeUtil;
 import com.loyal.base.widget.CommandDialog;
+import com.loyal.kit.ConnectUtil;
+import com.loyal.kit.ObjectUtil;
+import com.loyal.kit.TimeUtil;
+import com.loyal.kit.ToastUtil;
+import com.loyal.kit.impl.IntentFrame;
 
 /**
  * {@link ABasicFragActivity#onFrag2Act(String, Object...)}
  */
-public abstract class ABasicFragment extends Fragment implements IntentFrame.FragFrame, IUiCommandImpl {
+public abstract class ABasicFragment extends Fragment implements IntentFrame.FragFrame, IUICommandImpl {
     private IFrag2ActListener mListener;
 
     public abstract
@@ -45,7 +44,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     public abstract void unbind();
 
     protected IntentBuilder intentBuilder;
-    private Toast toast;
+    private ToastUtil toastUtil;
     private CommandDialog.Builder dialogBuilder;
 
     @Override
@@ -63,6 +62,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(fragLayoutRes(), container, false);
+        toastUtil = new ToastUtil(view.getContext());
         bindViews(view);
         hasIntentParams(false);
         afterOnCreate();
@@ -89,7 +89,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public void startActivityForResultByFrag(@Nullable String className, int reqCode) {
-        intentBuilder.startActivityForResultByFrag(className,reqCode);
+        intentBuilder.startActivityForResultByFrag(className, reqCode);
     }
 
     @Override
@@ -113,10 +113,16 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     @Override
-    public void showToast(@NonNull CharSequence sequence) {
-        Context context = getContext();
-        if (null != context)
-            initToast(sequence);
+    public void showToast(@NonNull final CharSequence sequence) {
+        FragmentActivity activity = getActivity();
+        if (activity != null) activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (null != toastUtil)
+                    toastUtil.show(sequence);
+            }
+        });
+
     }
 
     @Override
@@ -197,12 +203,8 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public void hideKeyBoard(@NonNull View view) {
-        Context context = getContext();
-        if (null == context)
-            return;
-        InputMethodManager im = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (im != null)
-            im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if (null!=toastUtil)
+            toastUtil.hideKeyBoard(view);
     }
 
     public Intent getIntent() {
@@ -216,22 +218,6 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         FragmentActivity activity = getActivity();
         if (null != activity)
             activity.finish();
-    }
-
-    private void initToast(CharSequence sequence) {
-        if (toast == null)
-            toast = Toast.makeText(getContext(), sequence, Toast.LENGTH_SHORT);
-        else {
-            toast.setText(sequence);
-            toast.setDuration(Toast.LENGTH_SHORT);
-        }
-        FragmentActivity activity = getActivity();
-        if (activity != null) activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                toast.show();
-            }
-        });
     }
 
     private void initCompatDialog() {
@@ -248,7 +234,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText("确 定");
+        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).showSingleBtn("确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
             public void onViewClick(CommandDialog dialog, View view, Object tag) {
@@ -277,8 +263,8 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     @Override
     public void onPause() {
         dismissCompatDialog();
-        if (null != toast)
-            toast.cancel();
+        if (null != toastUtil)
+            toastUtil.cancel();
         super.onPause();
     }
 

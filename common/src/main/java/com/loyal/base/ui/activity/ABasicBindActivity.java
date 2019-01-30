@@ -1,6 +1,5 @@
 package com.loyal.base.ui.activity;
 
-import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,27 +8,25 @@ import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.Size;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.gyf.barlibrary.OSUtils;
 import com.loyal.base.impl.CommandViewClickListener;
-import com.loyal.base.impl.IUiCommandImpl;
-import com.loyal.base.impl.IntentFrame;
+import com.loyal.base.impl.IUICommandImpl;
 import com.loyal.base.impl.StatusImpl;
-import com.loyal.base.util.ConnectUtil;
-import com.loyal.base.util.IntentBuilder;
-import com.loyal.base.util.ObjectUtil;
-import com.loyal.base.util.StateBarUtil;
-import com.loyal.base.util.TimeUtil;
 import com.loyal.base.widget.CommandDialog;
+import com.loyal.kit.ConnectUtil;
+import com.loyal.kit.IntentBuilder;
+import com.loyal.kit.ObjectUtil;
+import com.loyal.kit.StateBarUtil;
+import com.loyal.kit.TimeUtil;
+import com.loyal.kit.ToastUtil;
+import com.loyal.kit.impl.IntentFrame;
 
 /**
  * this Activity just use to MvvM（DataBindingUtil.setContentView(Activity activity, int layoutId)）
@@ -40,7 +37,7 @@ import com.loyal.base.widget.CommandDialog;
  * </p>
  * @since 2018年3月1日11:44:19
  */
-public abstract class ABasicBindActivity extends AppCompatActivity implements IntentFrame.ActFrame, IUiCommandImpl, StatusImpl {
+public abstract class ABasicBindActivity extends AppCompatActivity implements IntentFrame.ActFrame, IUICommandImpl, StatusImpl {
     protected abstract
     @LayoutRes
     int actLayoutRes();
@@ -52,7 +49,7 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     public abstract void bindViews();
 
     protected IntentBuilder intentBuilder;
-    private Toast toast;
+    private ToastUtil toastUtil;
     protected ImmersionBar mImmersionBar;
     private static final String NAVIGATIONBAR_IS_MIN = "navigationbar_is_min";
     private CommandDialog.Builder dialogBuilder;
@@ -61,9 +58,9 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setViewByLayoutRes();
+        toastUtil = new ToastUtil(this);
         bindViews();
-        initImmersiveBar();
-        statusBar(StatusBarImpl.ImmerBar);
+        statusBar(StatusBarImpl.StateBar);
         hasIntentParams(false);
         afterOnCreate();
     }
@@ -74,23 +71,13 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     }
 
     @Override
-    public boolean isImmersiveBar() {
-        return true;
-    }
-
-    public void initImmersiveBar() {
-        if (isImmersiveBar()) {
-            mImmersionBar = ImmersionBar.with(this);
-            mImmersionBar.init();
-        }
-    }
-
     public void statusBar(@StatusBarImpl.source int barStatus) {
         switch (barStatus) {
             case StatusBarImpl.StateBar:
                 StateBarUtil.setTranslucentStatus(this, isFullScreen());//沉浸式状态栏
                 break;
             case StatusBarImpl.ImmerBar:
+                initImmersiveBar();
                 if (OSUtils.isEMUI3_1()) {
                     //第一种
                     getContentResolver().registerContentObserver(Settings.System.getUriFor(NAVIGATIONBAR_IS_MIN), true, mNavigationStatusObserver);
@@ -102,6 +89,11 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
             default:
                 break;
         }
+    }
+
+    private void initImmersiveBar() {
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.init();
     }
 
     public void hasIntentParams(boolean hasParam) {
@@ -214,9 +206,7 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
 
     @Override
     public void hideKeyBoard(@NonNull View view) {
-        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (im != null)
-            im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        toastUtil.hideKeyBoard(view);
     }
 
     @Override
@@ -225,17 +215,11 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
         showDialog(replaceNull(sequence) + (TextUtils.isEmpty(error) ? "" : "\n" + error), finish);
     }
 
-    private void initToast(CharSequence sequence) {
-        if (toast == null)
-            toast = Toast.makeText(this, sequence, Toast.LENGTH_SHORT);
-        else {
-            toast.setText(sequence);
-            toast.setDuration(Toast.LENGTH_SHORT);
-        }
+    private void initToast(final CharSequence sequence) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                toast.show();
+                toastUtil.show(sequence);
             }
         });
     }
@@ -246,12 +230,11 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     }
 
     private void showCompatDialog(CharSequence content, final boolean isFinish) {
-        if (null != dialogBuilder && dialogBuilder.isShowing())
-            dialogBuilder.dismiss();
+        dismissCompatDialog();
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).setBtnText("确 定");
+        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).showSingleBtn("确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
             public void onViewClick(CommandDialog dialog, View view, Object tag) {
@@ -271,8 +254,32 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     }
 
     public void dismissCompatDialog() {
-        if (null != dialogBuilder && dialogBuilder.isShowing())
+        if (null != dialogBuilder && dialogBuilder.isShowing()) {
             dialogBuilder.dismiss();
+            dialogBuilder = null;
+        }
+    }
+
+    /**
+     * 权限申请
+     */
+    public void showPermissionNextDialog(CharSequence content, CommandViewClickListener nextListener, boolean outsideCancel) {
+        showPermissionDialog(content, TypeImpl.NEXT, new String[]{"确 定"}, nextListener, outsideCancel);
+    }
+
+    public void showPermissionDialog(CharSequence content, @TypeImpl.source int btnType, String[] btnTexts,
+                                     CommandViewClickListener clickListener, boolean outsideCancel) {
+        dismissCompatDialog();
+        initCompatDialog();
+        dialogBuilder.setOutsideCancel(outsideCancel);
+        dialogBuilder.setContent(content);
+        dialogBuilder.showButton(btnType, btnTexts).setClickListener(clickListener);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialogBuilder.show();
+            }
+        });
     }
 
     @Override
@@ -300,39 +307,10 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
         }
     };
 
-    /**
-     * outsideTouch =true
-     */
-    public void showNextConfirmDialog(String message, CommandViewClickListener nextListener) {
-        showConfirmDialog(message, TypeImpl.NEXT, new String[]{"确 定"}, nextListener, true);
-    }
-
-    public void showNextConfirmDialog(String message, CommandViewClickListener nextListener, boolean outsideCancel) {
-        showConfirmDialog(message, TypeImpl.NEXT, new String[]{"确 定"}, nextListener, outsideCancel);
-    }
-
-    public void showConfirmDialog(String message, @TypeImpl.source int btnType, @Size(min = 1, max = 2) @NonNull String[] btnText, CommandViewClickListener clickListener) {
-        showConfirmDialog(message, btnType, btnText, clickListener, false);
-    }
-
-    /**
-     * @param btnText 0-nextText
-     *                1-cancelText
-     */
-    public void showConfirmDialog(String message, @TypeImpl.source int btnType, @Size(min = 1, max = 2) @NonNull String[] btnText, CommandViewClickListener clickListener, boolean outsideCancel) {
-        CommandDialog.Builder dialogBuilder = new CommandDialog.Builder(this);
-        dialogBuilder.setCancelable(false);
-        dialogBuilder.setOutsideCancel(outsideCancel);
-        dialogBuilder.setContent(replaceNull(message));
-        dialogBuilder.showWhichBtn(btnType).setNextBtnText(btnText[0]).setCancelBtnText(btnText.length > 1 ? btnText[1] : "");
-        dialogBuilder.setClickListener(clickListener);
-        dialogBuilder.show();
-    }
-
     @Override
     protected void onPause() {
-        if (null != toast)
-            toast.cancel();
+        if (null != toastUtil)
+            toastUtil.cancel();
         dismissCompatDialog();
         super.onPause();
     }

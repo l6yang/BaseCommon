@@ -1,12 +1,9 @@
 package com.loyal.base.download;
 
 import com.loyal.base.impl.IBaseContacts;
-import com.loyal.base.util.FileUtil;
-import com.loyal.base.util.IOUtil;
+import com.loyal.kit.FileUtil;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 

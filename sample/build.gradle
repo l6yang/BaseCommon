@@ -11,7 +11,7 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.loyal.base.sample"
+        applicationId "com.sample.base"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
@@ -28,6 +28,11 @@ android {
     dataBinding {
         enabled = true
     }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -41,7 +46,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation project(':common')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'//改为10.0.0之后要换成androidx
     /**上传时程序时出现transformClassesWithDexForRelease错误
      * 将其设置为Release模式并签名就好了（不知是什么原因）*/
 }

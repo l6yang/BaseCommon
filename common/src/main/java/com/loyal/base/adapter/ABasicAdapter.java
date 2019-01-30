@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.loyal.base.impl.AdapterImpl;
-import com.loyal.base.util.GsonUtil;
-import com.loyal.base.util.TimeUtil;
+import com.loyal.kit.GsonUtil;
+import com.loyal.kit.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +118,16 @@ public abstract class ABasicAdapter<T> extends BaseAdapter implements AdapterImp
         return TimeUtil.subEndTime(time);
     }
 
-    protected abstract
+    public abstract
     @LayoutRes
     int adapterLayout();
+
+    public View getConvertView(@LayoutRes int resId, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        return inflater.inflate(resId, parent, false);
+    }
+
+    public View getConvertView(ViewGroup parent) {
+        return getConvertView(adapterLayout(), parent);
+    }
 }

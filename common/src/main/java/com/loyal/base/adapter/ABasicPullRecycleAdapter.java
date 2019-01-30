@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.loyal.base.impl.IBaseContacts;
-import com.loyal.base.util.TimeUtil;
+import com.loyal.kit.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
