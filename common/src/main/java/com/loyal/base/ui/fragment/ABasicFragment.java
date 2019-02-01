@@ -1,6 +1,7 @@
 package com.loyal.base.ui.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
@@ -45,7 +46,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     protected IntentBuilder intentBuilder;
     private ToastUtil toastUtil;
-    private CommandDialog.Builder dialogBuilder;
+    public CommandDialog.Builder dialogBuilder;
 
     @Override
     public void onAttach(Context context) {
@@ -203,7 +204,7 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
 
     @Override
     public void hideKeyBoard(@NonNull View view) {
-        if (null!=toastUtil)
+        if (null != toastUtil)
             toastUtil.hideKeyBoard(view);
     }
 
@@ -220,8 +221,11 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
             activity.finish();
     }
 
-    private void initCompatDialog() {
-        Context context = getContext();
+    public void initCompatDialog() {
+        initCompatDialog(getContext());
+    }
+
+    public void initCompatDialog(Context context) {
         if (null == context)
             return;
         dialogBuilder = new CommandDialog.Builder(context);
@@ -229,16 +233,15 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     private void showCompatDialog(CharSequence content, final boolean isFinish) {
-        if (null != dialogBuilder && dialogBuilder.isShowing())
-            dialogBuilder.dismiss();
+        dismissCompatDialog();
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).showSingleBtn("确 定");
+        dialogBuilder.showSingleBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL, "确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
-            public void onViewClick(CommandDialog dialog, View view, Object tag) {
-                if (dialog != null && dialog.isShowing())
+            public void onViewClick(DialogInterface dialog, View view, Object tag) {
+                if (dialog != null)
                     dialog.dismiss();
                 if (isFinish) {
                     finish();
@@ -256,8 +259,10 @@ public abstract class ABasicFragment extends Fragment implements IntentFrame.Fra
     }
 
     public void dismissCompatDialog() {
-        if (null != dialogBuilder && dialogBuilder.isShowing())
+        if (null != dialogBuilder && dialogBuilder.isShowing()) {
             dialogBuilder.dismiss();
+            dialogBuilder = null;
+        }
     }
 
     @Override

@@ -48,11 +48,11 @@
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activity.RecycleActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 

@@ -2,6 +2,7 @@ package com.loyal.base.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
@@ -52,6 +53,8 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
         private TextView btnNext, btnCancel;
         private boolean cancelable = false, outsideCancelable = false, showInAsServices = false;
         private Object objectTag;
+        private OnCancelListener onCancelListener;
+        private OnDismissListener onDismissListener;
 
         public Builder(Context context) {
             this.mContext = context;
@@ -200,6 +203,14 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
             return this;
         }
 
+        public void setOnCancelListener(@Nullable OnCancelListener listener) {
+            this.onCancelListener = listener;
+        }
+
+        public void setOnDismissListener(@Nullable OnDismissListener listener) {
+            this.onDismissListener = listener;
+        }
+
         public Builder setCancelBtnText(@StringRes int strId) {
             return setCancelBtnText(mContext.getString(strId));
         }
@@ -246,6 +257,8 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
             baseDialog.setCancelable(cancelable);
             baseDialog.setCanceledOnTouchOutside(outsideCancelable);
             baseDialog.setTag(objectTag);
+            baseDialog.setOnCancelListener(onCancelListener);
+            baseDialog.setOnDismissListener(onDismissListener);
             if (showInAsServices) {
                 Window window = baseDialog.getWindow();
                 if (null != window)
@@ -307,6 +320,11 @@ public class CommandDialog extends AppCompatDialog implements IBaseContacts {
         public void dismiss() {
             if (null != baseDialog)
                 baseDialog.dismiss();
+        }
+
+        public void cancel() {
+            if (null != baseDialog)
+                baseDialog.cancel();
         }
     }
 }

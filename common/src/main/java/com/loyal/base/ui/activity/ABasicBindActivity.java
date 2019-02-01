@@ -1,5 +1,7 @@
 package com.loyal.base.ui.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,7 +54,7 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     private ToastUtil toastUtil;
     protected ImmersionBar mImmersionBar;
     private static final String NAVIGATIONBAR_IS_MIN = "navigationbar_is_min";
-    private CommandDialog.Builder dialogBuilder;
+    public CommandDialog.Builder dialogBuilder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -224,8 +226,12 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
         });
     }
 
-    private void initCompatDialog() {
-        dialogBuilder = new CommandDialog.Builder(this);
+    public void initCompatDialog() {
+        initCompatDialog(this);
+    }
+
+    public void initCompatDialog(Context context) {
+        dialogBuilder = new CommandDialog.Builder(context);
         dialogBuilder.setOutsideCancel(false);
     }
 
@@ -234,11 +240,11 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
         initCompatDialog();
         dialogBuilder.setOutsideCancel(!isFinish);
         dialogBuilder.setContent(content);
-        dialogBuilder.showWhichBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL).showSingleBtn("确 定");
+        dialogBuilder.showSingleBtn(isFinish ? TypeImpl.NEXT : TypeImpl.CANCEL, "确 定");
         dialogBuilder.setClickListener(new CommandViewClickListener() {
             @Override
-            public void onViewClick(CommandDialog dialog, View view, Object tag) {
-                if (dialog != null && dialog.isShowing())
+            public void onViewClick(DialogInterface dialog, View view, Object tag) {
+                if (dialog != null)
                     dialog.dismiss();
                 if (isFinish) {
                     finish();

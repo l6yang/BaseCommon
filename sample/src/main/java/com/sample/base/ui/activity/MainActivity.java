@@ -1,5 +1,6 @@
 package com.sample.base.ui.activity;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.loyal.base.gps.GpsLocBean;
 import com.loyal.base.gps.GpsLocation;
+import com.loyal.base.impl.CommandViewClickListener;
+import com.loyal.base.widget.CommandDialog;
 import com.sample.base.FileUtil;
 import com.sample.base.R;
 import com.sample.base.adapter.ListAdapter;
@@ -119,6 +122,7 @@ public class MainActivity extends ABaseActivity implements SinglePermissionListe
                     }
                 });
                 RxUtil.rxExecutedByIO(subscriber.downloadImage(url), subscriber);*/
+                shodDialogForTest();
                 break;
             case R.id.save:
                 BitmapDrawable bitmap = ((BitmapDrawable) getResources().getDrawable(R.mipmap.pic));
@@ -156,6 +160,33 @@ public class MainActivity extends ABaseActivity implements SinglePermissionListe
     @Override
     public void onLocation(GpsLocBean gpsLocBean) {
         OutUtil.println(GsonUtil.bean2Json(gpsLocBean));
+    }
+
+    private void shodDialogForTest() {
+        CommandDialog.Builder dialogBuilder = new CommandDialog.Builder(this);
+        dialogBuilder.setOutsideCancel(true);
+        dialogBuilder.setContent("测试");
+        dialogBuilder.showSingleBtn(TypeImpl.NEXT, "确 定")
+                .setClickListener(new CommandViewClickListener() {
+                    @Override
+                    public void onViewClick(DialogInterface dialog, View view, Object tag) {
+                        System.out.println("onViewClick");
+                        dialog.dismiss();
+                    }
+                });
+        dialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.out.println("onCancel");
+            }
+        });
+        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                System.out.println("onDismiss");
+            }
+        });
+        dialogBuilder.show();
     }
 
     @Override
