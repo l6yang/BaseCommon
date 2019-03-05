@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 /**
  * 仅限于DrawerLayout+NavigationView+Toolbar
  */
-public abstract class ABasicDrawerActivity extends ABasicPerMissionActivity {
+public abstract class ABasicDrawerActivity extends ABasicFragActivity {
     public abstract @NonNull
     Toolbar toolbar();
 

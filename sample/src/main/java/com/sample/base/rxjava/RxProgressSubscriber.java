@@ -43,8 +43,8 @@ public class RxProgressSubscriber<T> extends BaseRxServerSubscriber<T> implement
     }
 
     @Override
-    public int defaultPort() {
-        return 8080;
+    public String defaultPort() {
+        return "8080";
     }
 
     @Override

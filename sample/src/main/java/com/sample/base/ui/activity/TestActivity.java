@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.loyal.base.adapter.BasePagerAdapter;
 import com.sample.base.R;
 import com.sample.base.base.ABaseFragActivity;
+import com.sample.base.ui.fragment.BindingFragment;
 import com.sample.base.ui.fragment.BlankFragment;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class TestActivity extends ABaseFragActivity implements BottomNavigationV
         fragments.add(BlankFragment.newInstance("memory"));
         fragments.add(BlankFragment.newInstance("location"));
         fragments.add(BlankFragment.newInstance("phone"));
+        fragments.add(BindingFragment.newInstance());
         viewPager.setAdapter(new BasePagerAdapter(getSupportFragmentManager(), fragments));
         navigation.setOnNavigationItemSelectedListener(this);
         viewPager.addOnPageChangeListener(this);
@@ -50,6 +52,9 @@ public class TestActivity extends ABaseFragActivity implements BottomNavigationV
                 return true;
             case R.id.navigation_notifications:
                 viewPager.setCurrentItem(2);
+                return true;
+            case R.id.navigation_bind:
+                viewPager.setCurrentItem(3);
                 return true;
         }
         return false;
@@ -70,6 +75,9 @@ public class TestActivity extends ABaseFragActivity implements BottomNavigationV
                 break;
             case 2:
                 navigation.setSelectedItemId(R.id.navigation_notifications);
+                break;
+            case 3:
+                navigation.setSelectedItemId(R.id.navigation_bind);
                 break;
         }
     }

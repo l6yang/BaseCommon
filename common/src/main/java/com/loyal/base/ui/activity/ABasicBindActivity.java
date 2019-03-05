@@ -11,8 +11,11 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
 
@@ -21,6 +24,7 @@ import com.gyf.barlibrary.OSUtils;
 import com.loyal.base.impl.CommandViewClickListener;
 import com.loyal.base.impl.IUICommandImpl;
 import com.loyal.base.impl.StatusImpl;
+import com.loyal.base.impl.ToolBarBackListener;
 import com.loyal.base.widget.CommandDialog;
 import com.loyal.kit.ConnectUtil;
 import com.loyal.kit.IntentBuilder;
@@ -55,6 +59,8 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
     protected ImmersionBar mImmersionBar;
     private static final String NAVIGATIONBAR_IS_MIN = "navigationbar_is_min";
     public CommandDialog.Builder dialogBuilder;
+    private ActionBar actionBar;
+    private ToolBarBackListener backListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +97,43 @@ public abstract class ABasicBindActivity extends AppCompatActivity implements In
             default:
                 break;
         }
+    }
+
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        super.setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        setActionBack(true);
+    }
+
+    public void hideActionBar(boolean hide) {
+        if (hide) {
+            if (null != actionBar)
+                actionBar.hide();
+        }
+    }
+
+    public void setActionBack(boolean showHomeAsUp) {
+        if (null != actionBar) {
+            actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
+            actionBar.setHomeButtonEnabled(showHomeAsUp);
+        }
+    }
+
+    public void setToolbarBackListener(ToolBarBackListener listener) {
+        backListener = listener;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (null != backListener)
+                    backListener.onBack();
+                else finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initImmersiveBar() {

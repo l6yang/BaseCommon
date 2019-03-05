@@ -6,5 +6,4 @@ public abstract class ABasicActivity extends ABasicBindActivity {
     public void setViewByLayoutRes() {
         setContentView(actLayoutRes());
     }
-
 }
