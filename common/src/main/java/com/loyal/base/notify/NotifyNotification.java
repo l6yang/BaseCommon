@@ -1,7 +1,8 @@
-package com.sample.base.notify;
+package com.loyal.base.notify;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,33 +11,42 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
-import com.sample.base.R;
+import com.loyal.base.R;
 
-public class DownNotification {
+public class NotifyNotification {
+    private static final String NOTIFICATION_TAG = "notify";
+    private static final String CHANNEL_ID = "notifyID";
+    private static final String CHANNEL_NAME = "notifyName";
 
-    private static final String NOTIFICATION_TAG = "Download";
-
-    public static void notify(final Context context, int progress, String current) {
+    public static void notify(final Context context, String message) {
         final Resources res = context.getResources();
-        final Bitmap picture = BitmapFactory.decodeResource(res, R.mipmap.icon_command);
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.mipmap.ic_update);
         final String title = res.getString(R.string.app_name);
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_TAG)
-                //.setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.mipmap.icon_command)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setSmallIcon(R.mipmap.ic_update)
                 .setContentTitle(title)
-                .setContentText(current)
+                .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setLargeIcon(picture)
                 .setTicker(res.getString(R.string.app_name))//弹出Notify的提示语
-                .setProgress(100, progress, false)
-                .setOngoing(true);
+                .setAutoCancel(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId(CHANNEL_ID);
+        }
         notify(context, builder.build());
     }
 
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     private static void notify(final Context context, final Notification notification) {
-        final NotificationManager nm = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (null == nm)
+            return;
+        notification.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            nm.createNotificationChannel(mChannel);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
             nm.notify(NOTIFICATION_TAG, 0, notification);
         } else {
@@ -48,6 +58,8 @@ public class DownNotification {
     public static void cancel(final Context context) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
+        if (null == nm)
+            return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
             nm.cancel(NOTIFICATION_TAG, 0);
         } else {

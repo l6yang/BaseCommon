@@ -6,12 +6,13 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.loyal.base.impl.DownloadImpl;
+import com.loyal.base.service.DownloadService;
+import com.loyal.base.ui.activity.ABasicPerMissionActivity;
+import com.loyal.kit.OutUtil;
+import com.loyal.rx.impl.MultiplePermissionsListener;
 import com.sample.base.FileUtil;
 import com.sample.base.R;
-import com.sample.base.notify.UpdateNotification;
-import com.loyal.base.ui.activity.ABasicPerMissionActivity;
-import com.loyal.rx.impl.MultiplePermissionsListener;
-import com.loyal.kit.OutUtil;
 
 import butterknife.ButterKnife;
 
@@ -101,10 +102,14 @@ public class PermissionActivity extends ABasicPerMissionActivity implements Mult
                 break;
         }
     }
+
     public void onClick(View view) {
-        Intent intent = new Intent();
-        String apkUrl = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
-        intent.putExtra("apkUrl", apkUrl);
-        UpdateNotification.notify(this, intent);
+        if (!TextUtils.equals(DownloadImpl.State.UPDATE_ING, DownloadImpl.State.UPDATE)) {
+            DownloadImpl.State.UPDATE = DownloadImpl.State.UPDATE_ING;
+            Intent intent = new Intent();
+            String apkUrl = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
+            intent.putExtra("apkUrl", apkUrl);
+            DownloadService.startAction(this, apkUrl);
+        }
     }
 }

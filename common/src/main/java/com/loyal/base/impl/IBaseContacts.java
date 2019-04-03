@@ -6,6 +6,8 @@ import android.os.Build;
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
+import com.loyal.kit.ObjectUtil;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.URLDecoder;
@@ -23,7 +25,7 @@ public interface IBaseContacts {
         public static final String baseUrl = String.format("%s://%s:%s/%s/", http, defaultIpAdd, defaultPort, nameSpace);
 
         public static String replaceNull(CharSequence sequence) {
-            return TextUtils.isEmpty(sequence) ? "" : sequence.toString().trim();
+            return ObjectUtil.replaceNull(sequence);
         }
 
         public static String encodeStr2Utf(String str) {

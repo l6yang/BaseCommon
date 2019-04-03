@@ -1,19 +1,19 @@
-package com.sample.base.service;
+package com.loyal.base.service;
 
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.loyal.base.download.DownLoadAPI;
 import com.loyal.base.download.DownLoadBean;
 import com.loyal.base.download.DownLoadListener;
-import com.loyal.base.impl.IBaseContacts;
-import com.sample.base.FileUtil;
-import com.sample.base.notify.DownNotification;
-import com.sample.base.notify.NotifyNotification;
+import com.loyal.base.impl.DownloadImpl;
+import com.loyal.base.notify.DownNotification;
+import com.loyal.base.notify.NotifyNotification;
 import com.loyal.kit.DeviceUtil;
-import com.loyal.kit.OutUtil;
+import com.loyal.kit.ObjectUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -23,27 +23,36 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
-public class DownloadService extends IntentService implements IBaseContacts, DownLoadListener, Observer<InputStream> {
-    private static final String ACTION = "service.action.Download";
-    private Disposable disposable;
+/**
+ * <service
+ * android:name="com.loyal.base.service.DownloadService"
+ * android:exported="false" />
+ */
+public class DownloadService extends IntentService implements DownloadImpl, DownLoadListener, Observer<InputStream> {
+    private static final String SD_PATH = Environment.getExternalStorageDirectory().getPath();
 
-    private final File file = new File(FileUtil.apkPath, FileUtil.apkName);
+    private static final String ACTION = "service.action.DownLoad";
+    private static final String APKURL = "apkUrl";
+    private Disposable disposable;
+    private static final File apkFile = new File(SD_PATH, "update.apk");
 
     public DownloadService() {
-        super("CheckUpdateService");
+        super("DownloadService");
     }
 
-    public static void startAction(Context context, Intent intent) {
+    public static void startAction(Context context, String apkUrl) {
+        Intent intent = new Intent(ACTION);
         intent.setClass(context, DownloadService.class);
-        intent.setAction(ACTION);
+        intent.putExtra(APKURL, apkUrl);
+        context.startService(intent);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION.equals(action)) {
-                final String apkUrl = intent.getStringExtra("apkUrl");
+            if (TextUtils.equals(ACTION, action)) {
+                final String apkUrl = intent.getStringExtra(APKURL);
                 handleAction(apkUrl);
             }
         }
@@ -51,7 +60,7 @@ public class DownloadService extends IntentService implements IBaseContacts, Dow
 
     private void handleAction(String apkUrl) {
         Observable<ResponseBody> observable = DownLoadAPI.getInstance(this).getDownService().downLoad(apkUrl);
-        DownLoadAPI.saveFile(observable, file, this);
+        DownLoadAPI.saveFile(observable, apkFile, this);
     }
 
     private void dispose() {
@@ -69,28 +78,27 @@ public class DownloadService extends IntentService implements IBaseContacts, Dow
      * 界面和通知栏进度同步
      */
     private void sendIntent(DownLoadBean download) {
-        /*Intent intent = new Intent(ActionImpl.DOWNLOAD);
-        intent.putExtra("downLoad", download);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);*/
-
-        String state = IBaseContacts.BaseStr.replaceNull(download.getState());
+        String state =  ObjectUtil.replaceNull(download.getState());
         int progress = download.getProgress();
-        OutUtil.println("已下载进度 " + progress + "%");
         if (TextUtils.equals("loading", state)) {
             String size = DeviceUtil.getDataSize(download.getCurrentFileSize());
             String total = DeviceUtil.getDataSize(download.getTotalFileSize());
             String current = String.format("%s / %s", size, total);
+            State.UPDATE = State.UPDATE_ING;
             DownNotification.notify(this, progress, current);
         } else if (TextUtils.equals("complete", state)) {
             DownNotification.cancel(this);
-            if (!file.exists()) {
+            if (!apkFile.exists()) {
+                State.UPDATE = State.UPDATE_FAIL;
                 NotifyNotification.notify(this, "安装失败，文件不存在");
             } else {
-                DeviceUtil.install(this, file);
+                State.UPDATE = State.UPDATE_SUCCESS;
+                DeviceUtil.install(this, apkFile);
             }
         } else {
+            State.UPDATE = State.UPDATE_FAIL;
             DownNotification.cancel(this);
-            NotifyNotification.notify(this, "下载失败");
+            NotifyNotification.notify(this, String.format("下载失败:%s", state));
         }
     }
 
@@ -114,19 +122,18 @@ public class DownloadService extends IntentService implements IBaseContacts, Dow
 
     @Override
     public void onNext(InputStream inputStream) {
-        OutUtil.println("onNext::");
     }
 
     @Override
     public void onError(Throwable e) {
         dispose();
+        State.UPDATE = State.UPDATE_FAIL;
         downloadCompleted(false, e.getMessage());
     }
 
     @Override
     public void onComplete() {
         dispose();
-        OutUtil.println("onComplete");
-        downloadCompleted(true, file.getPath());
+        downloadCompleted(true, apkFile.getPath());
     }
 }
