@@ -63,3 +63,7 @@ BaseLib
 <br>compile（implementation） 'com.loyal:baseCommon:1.0.0'
 # --以上就是如何将自己的项目发布到JCenter--
 **2018年1月26日**
+## 使用Bintray 上传包到Jcenter上报错：
+Failed to send a message: The version control XXX returns 404.
+* 解决办法：
+复制如图右上角的地址，然后点击Edit，将复制的地址粘贴到Version control* 处，然后点击Update Package提交更改，返回页面重新 Add to JCenter 即可。
